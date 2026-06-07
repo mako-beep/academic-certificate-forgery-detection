@@ -461,10 +461,14 @@ def predict():
 
     file.save(filepath)
 
+    print("STEP 1: FILE SAVED")
+
     # =========================
     # FEATURE EXTRACTION
     # =========================
     features = extract_features(filepath)
+
+    print("STEP 2: FEATURES EXTRACTED")
 
     if features is None:
 
@@ -479,10 +483,14 @@ def predict():
     # =========================
     result, confidence, process_status = predict_document(features)
 
+    print("STEP 3: PREDICTION COMPLETE")
+
     # =========================
     # SAVE TO DATABASE
     # =========================
     cursor = mysql.connection.cursor()
+
+    print("STEP 4: CURSOR CREATED")
 
     cursor.execute("""
         INSERT INTO documents
@@ -498,7 +506,11 @@ def predict():
         process_status
     ))
 
+    print("STEP 5: INSERT EXECUTED")
+
     mysql.connection.commit()
+
+    print("STEP 6: COMMIT COMPLETE")
 
     # =========================
     # ADMIN NOTIFICATION
