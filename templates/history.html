@@ -1,0 +1,926 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scan History | UTHM Document Verification</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Official UTHM Palette Constants matched to Ecosystem */
+            --uthm-navy: #002147;       /* Primary Deep Corporate Blue */
+            --uthm-blue: #0056B3;       /* Secondary Electric Active Blue */
+            --uthm-blue-light: #E6F0FA; /* Background Tint for Interactive Rows */
+            --uthm-gold: #FF9900;       /* Accent Branding Crest Gold */
+            --uthm-gold-light: #FFF5E6; /* Warning Tints */
+            
+            /* Structural System Canvas */
+            --bg-base: #F0F4F8;
+            --bg-card: #FFFFFF;
+            --border-clean: rgba(0, 33, 71, 0.1);
+            --border-hover: rgba(0, 86, 179, 0.25);
+            
+            /* Controlled Contrast Typography */
+            --text-title: #001124;
+            --text-body: #2C3E50;
+            --text-muted: #5A738E;
+
+            /* Contextual Semantic Variables */
+            --accent-success: #198754;
+            --accent-success-bg: #E8F5E9;
+            --accent-danger: #DC3545;
+            --accent-danger-bg: #FDF2F2;
+
+            /* Radii & Shadows */
+            --radius-pill: 100px;
+            --radius-panel: 16px;
+            --radius-item: 10px;
+            --shadow-premium: 0 6px 18px rgba(0, 33, 71, 0.04), 0 1px 3px rgba(0, 33, 71, 0.02);
+            --shadow-hover: 0 12px 28px rgba(0, 33, 71, 0.08), 0 2px 6px rgba(0, 33, 71, 0.04);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Global Structural Navigation (Dashboard & Upload Matched) --- */
+        .premium-navigation {
+            background: var(--uthm-navy);
+            border-bottom: 3px solid var(--uthm-gold);
+            padding: 14px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .uthm-logo-frame {
+            background: #ffffff;
+            padding: 6px 12px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .uthm-logo-frame img {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links-cluster {
+            display: flex;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            gap: 2px;
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 8px 22px;
+            border-radius: var(--radius-pill);
+            transition: all 0.25s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item i {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .nav-link-item:hover i {
+            color: var(--uthm-gold);
+        }
+
+        .nav-link-item.active {
+            background: var(--bg-card);
+            color: var(--uthm-navy);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .nav-link-item.active i {
+            color: var(--uthm-blue);
+        }
+
+        .nav-action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+        }
+
+        /* --- Functional Notification Hub Component --- */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .action-circle-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+            position: relative;
+        }
+
+        .action-circle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--uthm-gold);
+            color: var(--uthm-gold);
+        }
+
+        .action-circle-btn.menu-active {
+            background: #ffffff;
+            color: var(--uthm-navy);
+            border-color: #ffffff;
+        }
+
+        .ping-indicator {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-danger);
+            border: 2px solid var(--uthm-navy);
+        }
+
+        .action-circle-btn.menu-active .ping-indicator {
+            border-color: #ffffff;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            width: 320px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-panel);
+            box-shadow: var(--shadow-hover);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+            animation: menuAppend 0.2s var(--easing) forwards;
+            transform-origin: top right;
+        }
+
+        @keyframes menuAppend {
+            from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 14px 18px;
+            background: var(--uthm-navy);
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-header h4 { font-size: 13.5px; font-weight: 700; letter-spacing: 0.02em; }
+        .dropdown-header span { font-size: 11px; background: var(--uthm-gold); color: var(--uthm-navy); padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 700; }
+
+        .dropdown-body { max-height: 260px; overflow-y: auto; }
+
+        .dropdown-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            gap: 12px;
+            transition: background 0.15s ease;
+            text-decoration: none;
+            color: var(--text-body);
+        }
+
+        .dropdown-item:hover { background: var(--uthm-blue-light); }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item i { margin-top: 3px; font-size: 14px; }
+        .dropdown-item.info i { color: var(--uthm-blue); }
+        .dropdown-item.warn i { color: var(--uthm-gold); }
+        .dropdown-item p { font-size: 12.5px; line-height: 1.4; }
+        .dropdown-item span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        /* --- Identity Info & Session Actions --- */
+        .user-meta-capsule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 14px 5px 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .avatar-placeholder {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .user-meta-capsule span { font-size: 13px; font-weight: 600; color: #ffffff; }
+
+        .logout-btn-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #ff8591;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+        }
+
+        .logout-btn-header:hover {
+            background: var(--accent-danger-bg);
+            border-color: var(--accent-danger);
+            color: var(--accent-danger);
+        }
+
+        /* --- Canvas Interface Workspace --- */
+        .workspace-wrapper {
+            flex: 1;
+            padding: 40px 64px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .dashboard-hero-region {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-clean);
+            padding-bottom: 20px;
+        }
+
+        .hero-welcome-text h1 {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--uthm-navy);
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .hero-welcome-text p { font-size: 14.5px; color: var(--text-body); }
+
+        .meta-glass-pill {
+            background: var(--bg-card);
+            border-left: 4px solid var(--uthm-gold);
+            box-shadow: var(--shadow-premium);
+            padding: 10px 18px;
+            border-radius: 0 var(--radius-item) var(--radius-item) 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .meta-glass-pill i { color: var(--uthm-blue); font-size: 15px; }
+        .meta-glass-pill div p { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; }
+        .meta-glass-pill div h4 { font-size: 13.5px; font-weight: 700; color: var(--uthm-navy); }
+
+        /* --- Modern Operational History Grid Card Panel --- */
+        .premium-panel {
+            background: var(--bg-card);
+            border-radius: var(--radius-panel);
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            padding: 0;
+            overflow: hidden;
+            transition: border-color 0.3s var(--easing), box-shadow 0.3s var(--easing);
+            animation: panelFadeUp 0.4s var(--easing) forwards;
+        }
+
+        @keyframes panelFadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .premium-panel:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .panel-header-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 32px;
+            background: linear-gradient(90deg, #FAFBFC 0%, #FFFFFF 100%);
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .panel-header-inline h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--uthm-navy);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* --- Re-engineered Tables UI Components --- */
+        .table-responsive-frame {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        table th {
+            background: var(--bg-base);
+            padding: 14px 32px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        table td {
+            padding: 16px 32px;
+            font-size: 13.5px;
+            color: var(--text-body);
+            border-bottom: 1px solid var(--border-clean);
+            vertical-align: middle;
+        }
+
+        table tr:last-child td { border-bottom: none; }
+        table tr:hover td { background: var(--uthm-blue-light); }
+
+        /* Unified System Badges matched across pages */
+        .res-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .res-badge.genuine { background: var(--accent-success-bg); color: var(--accent-success); }
+        .res-badge.forged { background: var(--accent-danger-bg); color: var(--accent-danger); }
+        .res-badge.pending { background: var(--uthm-gold-light); color: var(--uthm-gold); }
+
+        .status-text { font-size: 13.5px; font-weight: 700; display: inline-flex; align-items: center; gap: 6px; }
+
+        /* Interactive Row Action Buttons */
+        .actions-cell-cluster {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .view-btn {
+            background: #ffffff;
+            color: var(--uthm-navy);
+            border: 1px solid var(--border-clean);
+            padding: 8px 14px;
+            border-radius: var(--radius-item);
+            cursor: pointer;
+            font-size: 12.5px;
+            font-weight: 700;
+            transition: all 0.2s var(--easing);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .view-btn:hover {
+            background: var(--uthm-blue-light);
+            border-color: var(--uthm-blue);
+            color: var(--uthm-blue);
+        }
+
+        .report-btn {
+            background: var(--uthm-blue);
+            color: #ffffff;
+            border: 1px solid transparent;
+            padding: 8px 14px;
+            border-radius: var(--radius-item);
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: 700;
+            transition: all 0.2s var(--easing);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 2px 6px rgba(0, 86, 179, 0.15);
+        }
+
+        .report-btn:hover {
+            background: var(--uthm-navy);
+            box-shadow: 0 4px 12px rgba(0, 33, 71, 0.2);
+        }
+
+        /* --- Premium Empty States Framework --- */
+        .empty {
+            text-align: center;
+            padding: 70px 32px;
+            color: var(--text-muted);
+        }
+
+        .empty i {
+            font-size: 46px;
+            color: var(--uthm-blue-light);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .empty h2 {
+            color: var(--uthm-navy);
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .empty p { font-size: 13.5px; max-width: 420px; margin: 0 auto; }
+
+        /* --- Seamless Micro-engineered Portal Modals --- */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 17, 36, 0.4);
+            backdrop-filter: blur(6px);
+        }
+
+        .modal-content {
+            background: var(--bg-card);
+            width: 90%;
+            max-width: 560px;
+            margin: 80px auto;
+            padding: 32px;
+            border-radius: var(--radius-panel);
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-hover);
+            position: relative;
+            animation: modalSlide 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        @keyframes modalSlide {
+            from { opacity: 0; transform: translateY(-24px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .modal-content h2 {
+            font-size: 18px;
+            color: var(--uthm-navy);
+            font-weight: 700;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-clean);
+            padding-bottom: 12px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 28px;
+            right: 32px;
+            font-size: 20px;
+            cursor: pointer;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--bg-base);
+        }
+
+        .close-btn:hover {
+            color: var(--text-title);
+            background: var(--border-hover);
+        }
+
+        .modal-image {
+            width: 100%;
+            max-height: 240px;
+            object-fit: contain;
+            border-radius: var(--radius-item);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-clean);
+            background: var(--bg-base);
+            padding: 6px;
+
+            cursor: pointer;
+            transition: 0.2s ease;
+        }
+
+        .modal-image:hover {
+            transform: scale(1.02);
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px 4px;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .detail-row:last-of-type { border-bottom: none; }
+        .detail-row strong { color: var(--text-muted); font-weight: 600; font-size: 13.5px; }
+        .detail-row span { font-size: 13.5px; font-weight: 700; color: var(--text-title); }
+
+        @media (max-width: 1200px) {
+            .premium-navigation { padding: 14px 24px; }
+            .workspace-wrapper { padding: 32px 24px; }
+            table th, table td { padding: 14px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="premium-navigation">
+        <div class="nav-brand-group">
+            <div class="uthm-logo-frame">
+                <img src="{{ url_for('static', filename='uthm.png') }}" alt="Universiti Tun Hussein Onn Malaysia Logo">
+            </div>
+        </div>
+
+        <div class="nav-links-cluster">
+            <a href="/dashboard" class="nav-link-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/" class="nav-link-item">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload</span>
+            </a>
+            <a href="/history" class="nav-link-item active">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </a>
+            <a href="/profile" class="nav-link-item">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+
+        <div class="nav-action-cluster">
+            <div class="notification-wrapper" id="notificationHub">
+                <button class="action-circle-btn" id="notificationToggle" aria-label="Open Alerts Drawer" aria-haspopup="true">
+                    <i class="fa-regular fa-bell"></i>
+                    {% if unread_notifications > 0 %}
+                    <span class="ping-indicator"></span>
+                    {% endif %}
+                </button>
+                
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="dropdown-header">
+                        <h4>System Alerts</h4>
+                        <span>{{ unread_notifications }} New</span>
+                    </div>
+                    <div class="dropdown-body">
+
+                        {% if notifications %}
+
+                            {% for notification in notifications %}
+
+                            <a href="/history" class="dropdown-item info">
+
+                                <i class="fa-solid fa-bell"></i>
+
+                                <div>
+                                    <p>{{ notification[0] }}</p>
+                                    <span>{{ notification[1] }}</span>
+                                </div>
+
+                            </a>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="dropdown-item info">
+                                <div>
+                                    <p>No notifications available.</p>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="user-meta-capsule">
+                <div class="avatar-placeholder">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span>{{ username }}</span>
+            </div>
+
+            <button class="logout-btn-header" onclick="location.href='/logout'">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="workspace-wrapper">
+        
+        <section class="dashboard-hero-region">
+            <div class="hero-welcome-text">
+                <h1>Verification History</h1>
+                <p>View and review previously verified documents and analysis results.</p>
+            </div>
+            <div class="interactive-live-meta">
+                <div class="meta-glass-pill">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <p>Current Session</p>
+                        <h4 id="current-date">System Active</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="premium-panel">
+            <div class="panel-header-inline">
+                <h2>Verification Log Repository</h2>
+                <i class="fa-solid fa-database" style="color: var(--uthm-blue);"></i>
+            </div>
+
+            {% if documents %}
+            <div class="table-responsive-frame">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Filename</th>
+                            <th>Result Verdict</th>
+                            <th>Confidence</th>
+                            <th>Review Status</th>
+                            <th>Upload Date</th>
+                            <th style="text-align: right;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for doc in documents %}
+                        <tr>
+                            <td style="font-weight: 700; color: var(--uthm-navy);">{{ doc[1] }}</td>
+                            <td>
+                                {% if doc[2] == 'Genuine' %}
+                                    <span class="res-badge genuine"><i class="fa-solid fa-circle-check"></i> Genuine</span>
+                                {% elif doc[2] == 'Forged' %}
+                                    <span class="res-badge forged"><i class="fa-solid fa-circle-xmark"></i> Forged</span>
+                                {% else %}
+                                    <span class="res-badge pending"><i class="fa-solid fa-clock"></i> Pending</span>
+                                {% endif %}
+                            </td>
+                            <td style="font-weight: 800; color: var(--text-title);">{{ doc[3] }}%</td>
+                            <td>
+                                <span class="status-text">
+                                    {% if doc[4] == 'Completed' %}
+                                        <i class="fa-solid fa-circle-check" style="color: var(--accent-success);"></i> {{ doc[4] }}
+                                    {% else %}
+                                        <i class="fa-solid fa-clock" style="color: var(--uthm-gold);"></i> {{ doc[4] }}
+                                    {% endif %}
+                                </span>
+                            </td>
+                            <td style="color: var(--text-muted); font-size: 13px;">{{ doc[5] }}</td>
+                            <td style="text-align: right;">
+                                <div class="actions-cell-cluster" style="justify-content: flex-end;">
+                                    <button class="view-btn" onclick="openModal('{{ doc[1] }}', '{{ doc[2] }}', '{{ doc[3] }}', '{{ doc[4] }}', '{{ doc[5] }}')">
+                                        <i class="fa-regular fa-eye"></i> View Details
+                                    </button>
+                                    
+                                    {% if doc[4] == 'Completed' %}
+                                    <a href="/generate_report/{{ doc[0] }}" class="report-btn">
+                                        <i class="fa-solid fa-file-pdf"></i> Report
+                                    </a>
+                                    {% endif %}
+                                </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="empty">
+                <i class="fa-solid fa-folder-open"></i>
+                <h2>No Scan History Discovered</h2>
+                <p>Upload and verify documents to view your history records here.</p>
+            </div>
+            {% endif %}
+        </div>
+    </main>
+
+    <div id="detailModal" class="modal" role="dialog" aria-modal="true">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal()" aria-label="Close modal">&times;</span>
+            <h2>Document Verification Details</h2>
+            
+            <img id="modalImage" class="modal-image" src="" alt="Verified Document Frame Asset">
+
+            <div class="detail-row">
+                <strong>Result Verdict:</strong>
+                <span id="modalResult"></span>
+            </div>
+
+            <div class="detail-row">
+                <strong>Confidence Level:</strong>
+                <span id="modalConfidence"></span>
+            </div>
+
+            <div class="detail-row">
+                <strong>System Process Status:</strong>
+                <span id="modalStatus"></span>
+            </div>
+
+            <div class="detail-row">
+                <strong>Uploaded Timestamp:</strong>
+                <span id="modalDate" style="color: var(--text-muted); font-weight: 500;"></span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Calendar Meta Processing
+        const calendarOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', calendarOptions);
+
+        // Fully Functional Notification Toggle Logic 
+        const toggleButton = document.getElementById('notificationToggle');
+        const dropdownMenu = document.getElementById('notificationDropdown');
+
+        toggleButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isOpen = dropdownMenu.style.display === 'flex';
+            dropdownMenu.style.display = isOpen ? 'none' : 'flex';
+            this.classList.toggle('menu-active', !isOpen);
+        });
+
+        // Combined Global Click Dismiss Engine (Dropdown + Modal Contexts)
+        document.addEventListener('click', function(event) {
+            // Dismiss Notifications Click Away
+            if (!document.getElementById('notificationHub').contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+                toggleButton.classList.remove('menu-active');
+            }
+            
+            // Dismiss Modal Click Away
+            const modal = document.getElementById('detailModal');
+            if (event.target === modal) {
+                closeModal();
+            }
+
+            const imageModal = document.getElementById('imagePreviewModal');
+
+            if (event.target === imageModal) {
+                closeImagePreview();
+            }
+        });
+
+        // Telemetry Data Parsing Modal Functions
+        function openModal(filename, result, confidence, status, date) {
+            document.getElementById('detailModal').style.display = 'block';
+            document.getElementById('modalImage').src = '/static/uploads/' + filename;
+
+            document.getElementById('modalImage').onclick = function() {
+                openImagePreview(this.src);
+            };
+            
+            const modalResEl = document.getElementById('modalResult');
+            modalResEl.innerText = result;
+            modalResEl.className = 'res-badge'; 
+            
+            if (result === 'Genuine') {
+                modalResEl.classList.add('genuine');
+                modalResEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> Genuine`;
+            } else if (result === 'Forged') {
+                modalResEl.classList.add('forged');
+                modalResEl.innerHTML =
+                `<i class="fa-solid fa-circle-xmark"></i> Forged`;
+            }
+            else {
+                modalResEl.classList.add('pending');
+                modalResEl.innerHTML = `<i class="fa-solid fa-clock"></i> Pending`;
+            }
+
+            document.getElementById('modalConfidence').innerText = confidence + '%';
+            
+            const modalStatEl = document.getElementById('modalStatus');
+            modalStatEl.className = 'status-text';
+            if (status === 'Completed') {
+                modalStatEl.style.color = 'var(--accent-success)';
+                modalStatEl.innerHTML = `<i class="fa-solid fa-circle-check"></i> ${status}`;
+            } else {
+                modalStatEl.style.color = 'var(--uthm-gold)';
+                modalStatEl.innerHTML = `<i class="fa-solid fa-clock"></i> ${status}`;
+            }
+
+            document.getElementById('modalDate').innerText = date;
+        }
+
+        function closeModal() {
+            document.getElementById('detailModal').style.display = 'none';
+                    }
+
+                    function openImagePreview(imageSrc)
+            {
+                document.getElementById('imagePreviewModal').style.display = 'block';
+
+                document.getElementById('previewImage').src = imageSrc;
+            }
+
+            function closeImagePreview()
+            {
+                document.getElementById('imagePreviewModal').style.display = 'none';
+            }
+
+    </script>
+    <div id="imagePreviewModal" class="modal">
+    <div class="modal-content" style="max-width: 90%; width: auto;">
+        <span class="close-btn" onclick="closeImagePreview()">&times;</span>
+
+        <img
+            id="previewImage"
+            src=""
+            onclick="event.stopPropagation();"
+            style="
+                max-width:100%;
+                max-height:80vh;
+                object-fit:contain;
+                display:block;
+                margin:auto;
+            "
+        >
+    </div>
+</div>
+
+</body>
+</html>

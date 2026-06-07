@@ -1,0 +1,993 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin System Console | UTHM Document Verification</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Premium Midnight/Dark Theme Architecture for UTHM PPA */
+            --uthm-navy: #0A1220;       /* Ultra-Deep Midnight Navy Blue base */
+            --uthm-blue: #3B82F6;       /* Radiant Electric Accent Blue */
+            --uthm-gold: #FFCC00;       /* Official UTHM Golden Yellow Crest Accent */
+            
+            /* Structural Dark Surfaces */
+            --bg-base: #0F172A;         /* Rich Slate Core Dark Background Canvas */
+            --bg-card: #1E293B;         /* Elevated Soft Charcoal Raised Interface Cards */
+            --border-clean: #334155;     /* Structural Border/Gridlines Matrix */
+            --border-hover: #475569;     /* Interactive Outline Boundary Transition Accent */
+            
+            /* High Contrast Typography Matrix */
+            --text-title: #F8FAFC;       /* Crisp Near-White Title Header Typography */
+            --text-body: #CBD5E1;        /* Soft Gray Body Text Readability Focus */
+            --text-muted: #64748B;       /* Low-Emphasis Descriptive Metadata Label */
+
+            /* Optimized Dark Mode Semantic Status Indicators */
+            --metric-pending: #F59E0B;   /* Vibrant Luminous Amber */
+            --metric-pending-bg: rgba(245, 158, 11, 0.12);
+            --metric-genuine: #10B981;   /* Emerald Trust Ecosystem Safe-State */
+            --metric-genuine-bg: rgba(16, 185, 129, 0.12);
+            --metric-forged: #EF4444;    /* Security Warning Threat Vector Red */
+            --metric-forged-bg: rgba(239, 68, 68, 0.12);
+
+            /* Administrative Premium Elevations */
+            --radius-pill: 100px;
+            --radius-panel: 18px;
+            --radius-item: 8px;
+            --shadow-premium: 0 8px 24px rgba(0,0,0,.18);
+            --shadow-hover: 0 12px 32px rgba(0,0,0,.24);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Global Executive Navigation Layer --- */
+        .premium-navigation {
+            background: var(--uthm-navy);
+            border-bottom: 4px solid var(--uthm-gold);
+            padding: 0 32px;
+            height: 78px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .uthm-logo-frame {
+            background: #ffffff;
+            padding: 5px 12px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+        }
+
+        .uthm-logo-frame img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links-cluster {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            gap: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: rgba(248, 250, 252, 0.65);
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: var(--radius-pill);
+            transition: all 0.2s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item i {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .nav-link-item:hover {
+            color: var(--uthm-gold);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-link-item.active {
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            box-shadow: var(--shadow-premium);
+            border-radius: var(--radius-pill);
+        }
+
+        .nav-action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* --- System Notification Center Module --- */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .action-circle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+        }
+
+        .action-circle-btn:hover, .notification-wrapper:hover .action-circle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--uthm-gold);
+            color: var(--uthm-gold);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: var(--radius-pill);
+            background: var(--metric-forged);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--uthm-navy);
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 340px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-panel);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        .notification-wrapper:hover .notification-dropdown {
+            display: flex;
+            animation: drawerSlide 0.2s var(--easing) forwards;
+        }
+
+        @keyframes drawerSlide {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-title);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .dropdown-header h4 { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+        .dropdown-body { max-height: 280px; overflow-y: auto; }
+
+        .notification-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: var(--bg-card);
+            transition: background-color 0.2s ease;
+        }
+        .notification-item:hover { background: rgba(255, 255, 255, 0.02); }
+        .notification-item p { font-size: 13px; line-height: 1.4; color: var(--text-body); }
+        .notification-item span { font-size: 11px; color: var(--text-muted); }
+        .empty { text-align: center; color: var(--text-muted); padding: 32px 12px; font-size: 13px; }
+
+        /* --- Admin Executive Label Capsule --- */
+        .admin-meta-capsule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 14px 5px 5px;
+            background: rgba(255,255,255,0.06);
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .admin-meta-capsule span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .logout-btn-header {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+
+            padding: 10px 18px;
+
+            font-size: 13px;
+            font-weight: 600;
+
+            border-radius: var(--radius-pill);
+
+            display: flex;
+            align-items: center;
+            gap: 8px;
+
+            cursor: pointer;
+            transition: all .2s ease;
+        }
+
+        .logout-btn-header:hover {
+            background: rgba(220, 38, 38, 0.12);
+            border-color: #DC2626;
+            color: #DC2626;
+        }
+
+        /* --- Executive Workspace Viewport Layout --- */
+        .workspace-wrapper {
+            flex: 1;
+            padding: 32px 40px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .dashboard-hero-region {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-welcome-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-title);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-welcome-text p { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+
+        .meta-glass-pill {
+            background: var(--bg-card);
+            padding: 10px 18px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .meta-glass-pill i { color: var(--uthm-blue); font-size: 13px; }
+        .meta-glass-pill div p { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
+        .meta-glass-pill div h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: var(--text-title);
+        }
+
+        /* --- Top-Tier Key Performance Indicators Matrix --- */
+        .analytics-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-node {
+            background: var(--bg-card);
+            padding: 20px 24px;
+            border-radius: var(--radius-panel);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            transition: box-shadow 0.2s var(--easing), transform 0.2s var(--easing), border-color 0.2s var(--easing);
+        }
+
+        .metric-node:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .metric-data h3 {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .metric-data p {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-title);
+            line-height: 1.1;
+        }
+
+        .metric-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        /* Verified Genuine Enhanced Badge Integration */
+        .node-genuine { border-top: 3px solid var(--metric-genuine); }
+        .node-genuine .metric-icon-box { 
+            background: var(--metric-genuine-bg); 
+            color: var(--metric-genuine);
+            box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.2);
+        }
+        .node-genuine .metric-data p { color: var(--metric-genuine); }
+
+        .node-forged { border-top: 3px solid var(--metric-forged); }
+        .node-forged .metric-icon-box { background: var(--metric-forged-bg); color: var(--metric-forged); box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.2); }
+        
+        .node-pending { border-top: 3px solid var(--metric-pending); }
+        .node-pending .metric-icon-box { background: var(--metric-pending-bg); color: var(--metric-pending); box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.2); }
+        
+        .node-total { border-top: 3px solid var(--uthm-blue); }
+        .node-total .metric-icon-box { background: rgba(59, 130, 246, 0.12); color: var(--uthm-blue); box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.2); }
+
+        /* --- Split Layout Architecture --- */
+        .executive-control-grid {
+            display: grid;
+            grid-template-columns: 1fr 340px;
+            gap: 24px;
+            align-items: start;
+        }
+
+        /* Actionable File Ingestion Card Container */
+        .data-log-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-panel);
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .log-box-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .log-box-header h2 {
+            font-size: 14px;
+            color: var(--text-title);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .log-box-header h2 i { color: var(--text-muted); font-size: 14px; }
+
+        .view-all-link {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 12.5px;
+            font-weight: 600;
+            padding: 6px 12px;
+            border-radius: var(--radius-item);
+            background: rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+            border: 1px solid var(--border-clean);
+        }
+
+        .view-all-link:hover {
+            background: var(--uthm-blue);
+            border-color: var(--uthm-blue);
+            color: #ffffff;
+        }
+
+        .table-responsive { overflow-x: auto; }
+        table { width: 100%; border-collapse: collapse; text-align: left; }
+
+        th {
+            background: rgba(0, 0, 0, 0.12);
+            padding: 12px 24px;
+            color: var(--text-muted);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        td { 
+            padding: 14px 24px; 
+            border-bottom: 1px solid var(--border-clean); 
+            font-size: 13px; 
+            color: var(--text-body); 
+            vertical-align: middle; 
+        }
+
+        tr:last-of-type td { border-bottom: none; }
+        tr:hover td { background: rgba(255, 255, 255, 0.01); }
+
+        .user-identity-cell { display: flex; align-items: center; gap: 8px; font-weight: 500; color: var(--text-title); }
+        .user-identity-cell i { color: var(--text-muted); }
+
+        .document-hash-code {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            color: var(--uthm-blue);
+            background: rgba(0, 0, 0, 0.15);
+            padding: 4px 10px;
+            border-radius: var(--radius-item);
+            border: 1px solid var(--border-clean);
+            max-width: 280px;
+            display: inline-block;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* --- TRUSTED VERIFICATION INDICATORS --- */
+        .badge-console-pending {
+            background: var(--metric-pending-bg); color: var(--metric-pending);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 4px 10px; border-radius: var(--radius-pill);
+            font-weight: 700; font-size: 11px; display: inline-flex; align-items: center; gap: 6px;
+        }
+        .badge-console-pending::before { content: ''; width: 5px; height: 5px; background-color: var(--metric-pending); border-radius: 50%; }
+
+        .badge-console-genuine {
+            background: var(--metric-genuine-bg); color: var(--metric-genuine);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            padding: 4px 12px; border-radius: var(--radius-pill);
+            font-weight: 700; font-size: 11px; display: inline-flex; align-items: center; gap: 6px;
+            text-transform: uppercase; letter-spacing: 0.03em;
+        }
+
+        .action-button-gate {
+            background: rgba(255, 255, 255, 0.02); color: var(--text-title); text-decoration: none;
+            padding: 6px 12px; border-radius: var(--radius-item);
+            font-size: 12px; font-weight: 600; display: inline-flex; align-items: center; gap: 6px;
+            transition: all 0.2s var(--easing); border: 1px solid var(--border-clean);
+        }
+
+        .action-button-gate:hover { 
+            background: var(--uthm-blue); 
+            border-color: var(--uthm-blue); 
+            color: #FFFFFF;
+        }
+
+        /* --- Analytical Support Columns --- */
+        .supportive-analytics-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .system-visualization-panel {
+            background: var(--bg-card);
+            border-radius: var(--radius-panel);
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            padding: 24px;
+        }
+
+        .visualization-header {
+            margin-bottom: 20px;
+        }
+
+        .visualization-header h3 {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-title);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .visualization-header h3 i { color: var(--text-muted); }
+
+        /* --- MODERN SVG RADIAL/DOUGHNUT CHART ARCHITECTURE --- */
+        .ratio-chart-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 0 24px 0;
+            border-bottom: 1px solid var(--border-clean);
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .svg-chart-container {
+            position: relative;
+            width: 160px;
+            height: 160px;
+        }
+
+        .svg-chart-container svg {
+            width: 160px;
+            height: 160px;
+            transform: rotate(-90deg);
+            transform-origin: center;
+        }
+
+        .chart-base-track {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.05);
+            stroke-width: 14;
+        }
+
+        .chart-segment-fill {
+            fill: none;
+            stroke-width: 14;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.5s ease-in-out;
+        }
+
+        .chart-inner-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .chart-inner-overlay span {
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: var(--text-muted);
+            letter-spacing: 0.03em;
+            display: block;
+        }
+
+        .chart-inner-overlay strong {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--text-title);
+            line-height: 1.2;
+        }
+
+        /* Compact Supporting Trend Distributions */
+        .activity-trend-bar-matrix {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .avatar-admin-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .node-forged .metric-data p { color: var(--metric-forged); }
+        .node-pending .metric-data p { color: var(--metric-pending); }
+        .node-total .metric-data p { color: var(--uthm-blue); }
+        .metric-data h3 i { color: var(--metric-genuine); margin-right: 4px; }
+        .nav-link-item.active i { color: var(--uthm-navy); opacity: 1; }
+        .nav-link-item:hover i { color: var(--uthm-gold); }
+
+        .nav-link-item.active:hover i {
+            color: var(--uthm-navy);
+            opacity: 1;
+        }
+
+        .nav-link-item.active:hover {
+            color: var(--uthm-navy);
+            background: var(--uthm-gold);
+        }
+
+        .trend-bar-row { display: flex; flex-direction: column; gap: 4px; }
+        .trend-bar-labels { display: flex; justify-content: space-between; font-size: 11.5px; }
+        .trend-title { color: var(--text-body); display: flex; align-items: center; gap: 6px; }
+        .trend-value { font-weight: 600; color: var(--text-title); }
+
+        .bar-track-wrapper {
+            height: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: var(--radius-pill);
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.02);
+        }
+        .bar-fill-indicator { height: 100%; border-radius: var(--radius-pill); }
+
+        @media (max-width: 1200px) {
+            .executive-control-grid { grid-template-columns: 1fr; }
+            .supportive-analytics-stack { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+        }
+        @media (max-width: 992px) {
+            .premium-navigation { padding: 0 20px; }
+            .workspace-wrapper { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="premium-navigation">
+        <div class="nav-brand-group">
+            <div class="uthm-logo-frame">
+                <img src="{{ url_for('static', filename='uthm.png') }}" onerror="this.src='uthm.jpg'" alt="Universiti Tun Hussein Onn Malaysia Logo">
+            </div>
+        </div>
+
+        <div class="nav-links-cluster">
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link-item active">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin_dataset') }}" class="nav-link-item">
+                <i class="fa-solid fa-database"></i>
+                <span>Dataset</span>
+            </a>
+            <a href="{{ url_for('admin_reviews') }}" class="nav-link-item">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>Reviews</span>
+            </a>
+            <a href="{{ url_for('activity_logs') }}" class="nav-link-item">
+                <i class="fa-solid fa-history"></i>
+                <span>Activity Logs</span>
+            </a>
+        </div>
+
+        <div class="nav-action-cluster">
+            <div class="notification-wrapper">
+                <button class="action-circle-btn" aria-label="Open Alerts Drawer">
+                    <i class="fa-solid fa-bell"></i>
+                    {% if unread_notifications > 0 %}
+                    <span class="notification-badge">{{ unread_notifications }}</span>
+                    {% endif %}
+                </button>
+                
+                <div class="notification-dropdown">
+                    <div class="dropdown-header">
+                        <h4>Notifications</h4>
+                    </div>
+                    <div class="dropdown-body">
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                            <div class="notification-item">
+                                <p>{{ notification[0] }}</p>
+                                <span>{{ notification[1] }}</span>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="empty">No notifications available.</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-meta-capsule">
+                <div class="avatar-admin-badge">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                    <span>{{ username }}</span>
+            </div>
+
+            <button class="logout-btn-header" onclick="location.href='/logout'">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="workspace-wrapper">
+        
+        <section class="dashboard-hero-region">
+            <div class="hero-welcome-text">
+                <h1>Admin Dashboard</h1>
+                <p>Monitor document verification activities, pending reviews and system statistics.</p>
+            </div>
+            <div class="interactive-live-meta">
+                <div class="meta-glass-pill">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <p>Current Session</p>
+                        <h4 id="current-date">System Active</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="analytics-matrix">
+            <div class="metric-node node-genuine">
+                <div class="metric-data">
+                    <h3>
+                        <i class="fa-solid fa-circle-check"></i>
+                        Genuine Documents
+                    </h3>
+                    <p>{{ genuine }}</p>
+                </div>
+                <div class="metric-icon-box">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+            </div>
+
+            <div class="metric-node node-forged">
+                <div class="metric-data">
+                    <h3>Forged Documents</h3>
+                    <p>{{ forged }}</p>
+                </div>
+                <div class="metric-icon-box">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+            </div>
+
+            <div class="metric-node node-pending">
+                <div class="metric-data">
+                    <h3>Pending</h3>
+                    <p>{{ pending }}</p>
+                </div>
+                <div class="metric-icon-box">
+                    <i class="fa-solid fa-hourglass-half"></i>
+                </div>
+            </div>
+
+            <div class="metric-node node-total">
+                <div class="metric-data">
+                    <h3>Total Documents</h3>
+                    <p>{{ genuine|int + forged|int + pending|int }}</p>
+                </div>
+                <div class="metric-icon-box">
+                    <i class="fa-solid fa-folder-open"></i>
+                </div>
+            </div>
+        </section>
+
+        <div class="executive-control-grid">
+            
+            <section class="data-log-box">
+                <div class="log-box-header">
+                    <h2><i class="fa-solid fa-list-check"></i> Recent Pending Documents</h2>
+                    <a href="{{ url_for('admin_reviews') }}" class="view-all-link">Manage Queue</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Document</th>
+                                <th>Status</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% if latest_documents %}
+                                {% for row in latest_documents %}
+                                <tr>
+                                    <td>
+                                        <div class="user-identity-cell">
+                                            <i class="fa-regular fa-user"></i>
+                                            <span>{{ row[0] }}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <code class="document-hash-code" title="{{ row[1] }}">{{ row[1] }}</code>
+                                    </td>
+                                    <td>
+                                        {% if row[2] == 'Genuine' %}
+                                        <span class="badge-console-genuine">
+                                            <i class="fa-solid fa-certificate"></i>Genuine
+                                        </span>
+                                        {% else %}
+                                        <span class="badge-console-pending">
+                                            {{ row[2] }}
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                    <td style="text-align: right;">
+                                        <a href="{{ url_for('admin_reviews') }}" class="action-button-gate">
+                                            <i class="fa-solid fa-eye"></i> Review
+                                        </a>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="4" style="text-align: center; padding: 40px; color: var(--text-muted); font-size: 13px;">
+                                    No pending documents available for review.
+                                </td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <aside class="supportive-analytics-stack">
+                <div class="system-visualization-panel">
+                    <div class="visualization-header">
+                        <h3><i class="fa-solid fa-chart-pie"></i> Document Distribution</h3>
+                    </div>
+
+                    {% set total_docs = genuine|int + forged|int + pending|int %}
+                    {% set circumference = 408.4 %}
+
+                    {% if total_docs > 0 %}
+
+                        {% set genuine_pct = (genuine / total_docs * 100) %}
+                        {% set pending_pct = (pending / total_docs * 100) %}
+                        {% set forged_pct = (forged / total_docs * 100) %}
+
+                        {% set genuine_length = circumference * genuine_pct / 100 %}
+                        {% set pending_length = circumference * pending_pct / 100 %}
+                        {% set forged_length = circumference * forged_pct / 100 %}
+
+                    {% else %}
+
+                        {% set genuine_pct = 0 %}
+                        {% set pending_pct = 0 %}
+                        {% set forged_pct = 0 %}
+
+                        {% set genuine_length = 0 %}
+                        {% set pending_length = 0 %}
+                        {% set forged_length = 0 %}
+
+                    {% endif %}
+                    
+                    <div class="ratio-chart-wrapper">
+                        <div class="svg-chart-container">
+                            <svg width="160" height="160" viewBox="0 0 160 160">
+                                <circle class="chart-base-track" cx="80" cy="80" r="65"></circle>
+                                
+                                <circle class="chart-segment-fill"
+                                stroke="var(--metric-genuine)"
+                                stroke-dasharray="{{ genuine_length }} {{ circumference }}"
+                                stroke-dashoffset="0"
+                                cx="80" cy="80" r="65"></circle>
+
+                                <circle class="chart-segment-fill"
+                                stroke="var(--metric-pending)"
+                                stroke-dasharray="{{ pending_length }} {{ circumference }}"
+                                stroke-dashoffset="-{{ genuine_length }}"
+                                cx="80" cy="80" r="65"></circle>
+
+                                <circle class="chart-segment-fill"
+                                stroke="var(--metric-forged)"
+                                stroke-dasharray="{{ forged_length }} {{ circumference }}"
+                                stroke-dashoffset="-{{ genuine_length + pending_length }}"
+                                cx="80" cy="80" r="65"></circle>
+                            </svg>
+                            <div class="chart-inner-overlay">
+                                <span>Document</span>
+                                <strong>Overview</strong>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="activity-trend-bar-matrix">
+
+                        <div class="trend-bar-row">
+                            <div class="trend-bar-labels">
+                                <span class="trend-title">Genuine Documents</span>
+                                <span class="trend-value">{{ genuine_pct|round(1) }}%</span>
+                            </div>
+
+                            <div class="bar-track-wrapper">
+                                <div class="bar-fill-indicator"
+                                    style="width: {{ genuine_pct|round(1) }}%; background: var(--metric-genuine);">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="trend-bar-row">
+                            <div class="trend-bar-labels">
+                                <span class="trend-title">Pending</span>
+                                <span class="trend-value">{{ pending_pct|round(1) }}%</span>
+                            </div>
+
+                            <div class="bar-track-wrapper">
+                                <div class="bar-fill-indicator"
+                                    style="width: {{ pending_pct|round(1) }}%; background: var(--metric-pending);">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="trend-bar-row">
+                            <div class="trend-bar-labels">
+                                <span class="trend-title">Forged Documents</span>
+                                <span class="trend-value">{{ forged_pct|round(1) }}%</span>
+                            </div>
+
+                            <div class="bar-track-wrapper">
+                                <div class="bar-fill-indicator"
+                                    style="width: {{ forged_pct|round(1) }}%; background: var(--metric-forged);">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <script>
+        // High-Precision Real-time Institutional Execution Clock Component Loop
+        const calendarOptions = {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        };
+
+        document.getElementById('current-date').textContent =
+            new Date().toLocaleDateString('en-US', calendarOptions);
+    </script>
+</body>
+</html>

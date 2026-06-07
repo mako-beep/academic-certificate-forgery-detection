@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upload Document | UTHM Document Verification</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Official UTHM Palette Constants matched to Dashboard */
+            --uthm-navy: #002147;       /* Primary Deep Corporate Blue */
+            --uthm-blue: #0056B3;       /* Secondary Electric Active Blue */
+            --uthm-blue-light: #E6F0FA; /* Background Tint for Interactive Rows */
+            --uthm-gold: #FF9900;       /* Accent Branding Crest Gold */
+            --uthm-gold-light: #FFF5E6; /* Warning Tints */
+            
+            /* Structural System Canvas */
+            --bg-base: #F0F4F8;
+            --bg-card: #FFFFFF;
+            --border-clean: rgba(0, 33, 71, 0.1);
+            --border-hover: rgba(0, 86, 179, 0.25);
+            
+            /* Controlled Contrast Typography */
+            --text-title: #001124;
+            --text-body: #2C3E50;
+            --text-muted: #5A738E;
+
+            /* Contextual Semantic Variables */
+            --accent-success: #198754;
+            --accent-success-bg: #E8F5E9;
+            --accent-danger: #DC3545;
+            --accent-danger-bg: #FDF2F2;
+
+            /* Radii & Shadows */
+            --radius-pill: 100px;
+            --radius-panel: 16px;
+            --radius-item: 10px;
+            --shadow-premium: 0 6px 18px rgba(0, 33, 71, 0.04), 0 1px 3px rgba(0, 33, 71, 0.02);
+            --shadow-hover: 0 12px 28px rgba(0, 33, 71, 0.08), 0 2px 6px rgba(0, 33, 71, 0.04);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Global Structural Navigation (Dashboard Matched) --- */
+        .premium-navigation {
+            background: var(--uthm-navy);
+            border-bottom: 3px solid var(--uthm-gold);
+            padding: 14px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .uthm-logo-frame {
+            background: #ffffff;
+            padding: 6px 12px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .uthm-logo-frame img {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links-cluster {
+            display: flex;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            gap: 2px;
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 8px 22px;
+            border-radius: var(--radius-pill);
+            transition: all 0.25s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item i {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .nav-link-item:hover i {
+            color: var(--uthm-gold);
+        }
+
+        .nav-link-item.active {
+            background: var(--bg-card);
+            color: var(--uthm-navy);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .nav-link-item.active i {
+            color: var(--uthm-blue);
+        }
+
+        .nav-action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+        }
+
+        /* --- Functional Interactive Notification Component --- */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .action-circle-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+            position: relative;
+        }
+
+        .action-circle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--uthm-gold);
+            color: var(--uthm-gold);
+        }
+
+        .action-circle-btn.menu-active {
+            background: #ffffff;
+            color: var(--uthm-navy);
+            border-color: #ffffff;
+        }
+
+        .ping-indicator {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-danger);
+            border: 2px solid var(--uthm-navy);
+        }
+
+        .action-circle-btn.menu-active .ping-indicator {
+            border-color: #ffffff;
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            width: 320px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-panel);
+            box-shadow: var(--shadow-hover);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+            animation: menuAppend 0.2s var(--easing) forwards;
+            transform-origin: top right;
+        }
+
+        @keyframes menuAppend {
+            from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 14px 18px;
+            background: var(--uthm-navy);
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-header h4 { font-size: 13.5px; font-weight: 700; letter-spacing: 0.02em; }
+        .dropdown-header span { font-size: 11px; background: var(--uthm-gold); color: var(--uthm-navy); padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 700; }
+
+        .dropdown-body { max-height: 260px; overflow-y: auto; }
+
+        .dropdown-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            gap: 12px;
+            transition: background 0.15s ease;
+            text-decoration: none;
+            color: var(--text-body);
+        }
+
+        .dropdown-item:hover { background: var(--uthm-blue-light); }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item i { margin-top: 3px; font-size: 14px; }
+        .dropdown-item.info i { color: var(--uthm-blue); }
+        .dropdown-item.warn i { color: var(--uthm-gold); }
+        .dropdown-item p { font-size: 12.5px; line-height: 1.4; }
+        .dropdown-item span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        /* --- Identity Info & Session Actions --- */
+        .user-meta-capsule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 14px 5px 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .avatar-placeholder {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .user-meta-capsule span { font-size: 13px; font-weight: 600; color: #ffffff; }
+
+        .logout-btn-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #ff8591;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+        }
+
+        .logout-btn-header:hover {
+            background: var(--accent-danger-bg);
+            border-color: var(--accent-danger);
+            color: var(--accent-danger);
+        }
+
+        /* --- Canvas Interface Workspace --- */
+        .workspace-wrapper {
+            flex: 1;
+            padding: 40px 64px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .dashboard-hero-region {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-clean);
+            padding-bottom: 20px;
+        }
+
+        .hero-welcome-text h1 {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--uthm-navy);
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .hero-welcome-text p { font-size: 14.5px; color: var(--text-body); }
+
+        .meta-glass-pill {
+            background: var(--bg-card);
+            border-left: 4px solid var(--uthm-gold);
+            box-shadow: var(--shadow-premium);
+            padding: 10px 18px;
+            border-radius: 0 var(--radius-item) var(--radius-item) 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .meta-glass-pill i { color: var(--uthm-blue); font-size: 15px; }
+        .meta-glass-pill div p { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; }
+        .meta-glass-pill div h4 { font-size: 13.5px; font-weight: 700; color: var(--uthm-navy); }
+
+        /* --- Symmetrical Upload Structural Grid --- */
+        .asymmetric-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 32px;
+        }
+
+        @media (max-width: 1024px) {
+            .asymmetric-layout-grid { grid-template-columns: 1fr; }
+        }
+
+        .premium-panel {
+            background: var(--bg-card);
+            border-radius: var(--radius-panel);
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            padding: 28px;
+            transition: border-color 0.3s var(--shadow-premium), box-shadow 0.3s var(--easing);
+            animation: panelFadeUp 0.4s var(--easing) forwards;
+        }
+
+        @keyframes panelFadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .premium-panel:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .panel-header-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--border-clean);
+            padding-bottom: 12px;
+        }
+
+        .panel-header-inline h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--uthm-navy);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* --- Drag-and-Drop Area & Form Components --- */
+        .file-input-wrapper {
+            border: 2px dashed rgba(0, 86, 179, 0.25);
+            border-radius: var(--radius-panel);
+            padding: 50px 24px;
+            background: var(--bg-base);
+            margin-bottom: 24px;
+            transition: all 0.25s var(--easing);
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .file-input-wrapper:hover, .file-input-wrapper.dragover {
+            background: var(--uthm-blue-light);
+            border-color: var(--uthm-blue);
+            transform: scale(0.99);
+        }
+
+        .file-input-wrapper i {
+            font-size: 48px;
+            color: var(--uthm-blue);
+            transition: transform 0.2s;
+        }
+
+        .file-input-wrapper:hover i {
+            transform: translateY(-4px);
+        }
+
+        .file-input-wrapper p {
+            font-size: 14px;
+            color: var(--text-body);
+            font-weight: 600;
+        }
+
+        .file-input-wrapper span {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        input[type="file"] {
+            display: none; /* Clean native input override */
+        }
+
+        .file-name-preview {
+            display: none;
+            align-items: center;
+            gap: 10px;
+            background: var(--uthm-blue-light);
+            padding: 10px 16px;
+            border-radius: var(--radius-item);
+            margin-bottom: 20px;
+            font-size: 13px;
+            color: var(--uthm-navy);
+            font-weight: 600;
+            border: 1px solid var(--border-hover);
+        }
+
+        button[name="upload"] {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-item);
+            background: var(--uthm-blue);
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(0, 86, 179, 0.2);
+        }
+
+        button[name="upload"]:hover {
+            background: var(--uthm-navy);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-1px);
+        }
+
+        /* --- Analysis Results Display Subcomponents --- */
+        .preview-image img {
+            width: 100%;
+            max-height: 260px;
+            object-fit: contain;
+            border-radius: var(--radius-item);
+            margin-bottom: 20px;
+            border: 1px solid var(--border-clean);
+            background: var(--bg-base);
+            padding: 8px;
+        }
+
+        .scan-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 4px;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .scan-item:last-of-type { border-bottom: none; margin-bottom: 0; }
+        .scan-item span:first-child { font-weight: 600; color: var(--text-muted); font-size: 13.5px; }
+
+        .res-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 12px;
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .res-badge.genuine { background: var(--accent-success-bg); color: var(--accent-success); }
+        .res-badge.forged { background: var(--accent-danger-bg); color: var(--accent-danger); }
+        .res-badge.pending { background: var(--uthm-gold-light); color: var(--uthm-gold); }
+
+        .confidence-text { color: var(--uthm-navy); font-weight: 800; font-size: 1.3rem; }
+        .status-text { font-size: 13.5px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+
+        /* --- Application Messaging Handlers --- */
+        .error {
+            background: var(--accent-danger-bg);
+            color: var(--accent-danger);
+            padding: 12px 16px;
+            border-radius: var(--radius-item);
+            margin-bottom: 24px;
+            font-weight: 600;
+            font-size: 13.5px;
+            border: 1px solid rgba(220, 53, 69, 0.15);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        @media (max-width: 1200px) {
+            .premium-navigation { padding: 14px 24px; }
+            .workspace-wrapper { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="premium-navigation">
+        <div class="nav-brand-group">
+            <div class="uthm-logo-frame">
+                <img src="{{ url_for('static', filename='uthm.png') }}" alt="Universiti Tun Hussein Onn Malaysia Logo">
+            </div>
+        </div>
+
+        <div class="nav-links-cluster">
+            <a href="/dashboard" class="nav-link-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/" class="nav-link-item active">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload</span>
+            </a>
+            <a href="/history" class="nav-link-item">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </a>
+            <a href="/profile" class="nav-link-item">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+
+        <div class="nav-action-cluster">
+            <div class="notification-wrapper" id="notificationHub">
+                <button class="action-circle-btn" id="notificationToggle" aria-label="Open Alerts Drawer" aria-haspopup="true">
+                    <i class="fa-regular fa-bell"></i>
+                    {% if unread_notifications > 0 %}
+                    <span class="ping-indicator"></span>
+                    {% endif %}
+                </button>
+                
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="dropdown-header">
+                        <h4>System Alerts</h4>
+                        <span>{{ unread_notifications }} New</span>
+                    </div>
+                    <div class="dropdown-body">
+
+                        {% if notifications %}
+
+                            {% for notification in notifications %}
+
+                            <a href="/history" class="dropdown-item info">
+
+                                <i class="fa-solid fa-bell"></i>
+
+                                <div>
+                                    <p>{{ notification[0] }}</p>
+                                    <span>{{ notification[1] }}</span>
+                                </div>
+
+                            </a>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="dropdown-item info">
+                                <div>
+                                    <p>No notifications available.</p>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="user-meta-capsule">
+                <div class="avatar-placeholder">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span>{{ username }}</span>
+            </div>
+
+            <button class="logout-btn-header" onclick="location.href='/logout'">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="workspace-wrapper">
+        
+        <section class="dashboard-hero-region">
+            <div class="hero-welcome-text">
+                <h1>Document Verification</h1>
+                <p>Upload a document for authenticity verification and forgery detection.</p>
+            </div>
+            <div class="interactive-live-meta">
+                <div class="meta-glass-pill">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <p>Current Session</p>
+                        <h4 id="current-date">System Active</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="asymmetric-layout-grid">
+            
+            <div class="premium-panel">
+                <div class="panel-header-inline">
+                    <h2>Scan New Document Asset</h2>
+                    <i class="fa-solid fa-folder-plus" style="color: var(--uthm-blue);"></i>
+                </div>
+
+                {% if error %}
+                <div class="error">
+                    <i class="fa-solid fa-triangle-exclamation"></i>
+                    <span>{{ error }}</span>
+                </div>
+                {% endif %}
+
+                <form method="POST" action="/predict" enctype="multipart/form-data" id="uploadForm">
+                    <div class="file-input-wrapper" id="dropZone" onclick="document.getElementById('fileInput').click();">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                        <p>Drag and drop files here or click to browse</p>
+                        <span>Supported structural images: JPG</span>
+                    </div>
+
+                    <div class="file-name-preview" id="filePreview">
+                        <i class="fa-solid fa-file-image"></i>
+                        <span id="selectedFileName">No file targeted</span>
+                    </div>
+
+                    <input type="file" name="file" id="fileInput" accept="image/*" required>
+
+                    <button type="submit" name="upload">
+                        <i class="fa-solid fa-magnifying-glass-chart"></i>
+                        <span>Perform Verification</span>
+                    </button>
+                </form>
+            </div>
+
+            <div class="premium-panel">
+                <div class="panel-header-inline">
+                    <h2>Scan Analysis Metrics</h2>
+                    <i class="fa-solid fa-shield-halved" style="color: var(--uthm-blue);"></i>
+                </div>
+
+                {% if result %}
+                <div class="preview-image">
+                    <img src="{{ url_for('static', filename='uploads/' + image) }}" alt="Analysis Preview Frame">
+                </div>
+
+                <div class="scan-item">
+                    <span>Validation Verdict:</span>
+                    {% if result == 'Genuine' %}
+                        <span class="res-badge genuine"><i class="fa-solid fa-circle-check"></i> Genuine</span>
+                    {% elif result == 'Forged' %}
+                        <span class="res-badge forged"><i class="fa-solid fa-circle-xmark"></i> Forged</span>
+                    {% else %}
+                        <span class="res-badge pending"><i class="fa-solid fa-spinner fa-spin"></i> Pending</span>
+                    {% endif %}
+                </div>
+
+                <div class="scan-item">
+                    <span>Confidence:</span>
+                    <span class="confidence-text">{{ confidence }}%</span>
+                </div>
+
+                <div class="scan-item">
+                    <span>Process Status:</span>
+                    {% if status == 'Not Completed' %}
+                        <span class="status-text" style="color: var(--uthm-gold);">
+                            <i class="fa-solid fa-user-clock"></i>
+                            Awaiting Manual Verification        
+                        </span>
+                    {% else %}
+                        <span class="status-text" style="color: var(--accent-success);">
+                            <i class="fa-solid fa-circle-check"></i> Analysis Complete
+                        </span>
+                    {% endif %}
+                </div>
+                {% else %}
+                <div style="text-align: center; padding: 60px 20px; color: var(--text-muted);">
+                    <i class="fa-solid fa-chart-bar" style="font-size: 40px; color: var(--uthm-blue-light); margin-bottom: 16px; display: block;"></i>
+                    <p style="font-size: 14px; font-weight: 500;">No document has been analyzed yet. Upload a document to start the verification process.</p>
+                </div>
+                {% endif %}
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Calendar Meta Processing
+        const calendarOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', calendarOptions);
+
+        // Fully Functional Notification Toggle Logic 
+        const toggleButton = document.getElementById('notificationToggle');
+        const dropdownMenu = document.getElementById('notificationDropdown');
+
+        toggleButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isOpen = dropdownMenu.style.display === 'flex';
+            dropdownMenu.style.display = isOpen ? 'none' : 'flex';
+            this.classList.toggle('menu-active', !isOpen);
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!document.getElementById('notificationHub').contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+                toggleButton.classList.remove('menu-active');
+            }
+        });
+
+        // Interactive Drag & Drop Event Handling
+        const dropZone = document.getElementById('dropZone');
+        const fileInput = document.getElementById('fileInput');
+        const filePreview = document.getElementById('filePreview');
+        const selectedFileName = document.getElementById('selectedFileName');
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            }, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            dropZone.addEventListener(eventName, (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+            }, false);
+        });
+
+        dropZone.addEventListener('drop', (e) => {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if(files.length) {
+                fileInput.files = files;
+                updatePreview(files[0].name);
+            }
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            if(fileInput.files.length) {
+                updatePreview(fileInput.files[0].name);
+            }
+        });
+
+        function updatePreview(name) {
+            selectedFileName.textContent = name;
+            filePreview.style.display = 'flex';
+        }
+    </script>
+</body>
+</html>

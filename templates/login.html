@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | UTHM Document Verification</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            background-color: #f8fafc;
+            overflow: hidden;
+        }
+
+        /* Split Screen Container */
+        .page-wrapper {
+            display: flex;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ==========================================
+           Left Side: Branding Panel (Light Theme)
+        ========================================== */
+        .brand-panel {
+            flex: 1.2;
+            position: relative;
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.96), rgba(226, 232, 240, 0.92)), 
+                        url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?q=80&w=1000') no-repeat center center/cover;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .logo {
+            width: 310px;
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 40px;
+            filter: drop-shadow(0px 4px 12px rgba(0, 32, 96, 0.12));
+            transition: transform 0.4s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .brand-panel h2 {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin-bottom: 16px;
+            color: #002060;
+            line-height: 1.3;
+        }
+
+        .brand-panel p {
+            font-size: 15px;
+            color: #475569;
+            max-width: 420px;
+            line-height: 1.6;
+            font-weight: 400;
+        }
+
+        /* ==========================================
+           Right Side: Form Panel (Deep UTHM Blue + Ice Blue Accents)
+        ========================================== */
+        .form-panel {
+            flex: 1;
+            min-width: 520px;
+            background: linear-gradient(145deg, #001746, #002060);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px;
+            box-shadow: -10px 0 40px rgba(0,0,0,0.15);
+            position: relative;
+            z-index: 10;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 380px;
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .title {
+            margin-bottom: 35px;
+        }
+
+        .title h1 {
+            color: #ffffff; 
+            font-size: 32px;
+            font-weight: 700;
+            letter-spacing: -0.75px;
+        }
+
+        .title p {
+            color: #94a3b8;
+            margin-top: 8px;
+            font-size: 15px;
+            font-weight: 400;
+        }
+
+        /* Modernized Dark Input Fields */
+        .input-group {
+            position: relative;
+            margin-bottom: 22px;
+        }
+
+        .input-group > i {
+            position: absolute;
+            top: 50%;
+            left: 18px;
+            transform: translateY(-50%);
+            color: #64748b;
+            font-size: 16px;
+            transition: color 0.25s ease;
+            pointer-events: none;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 16px 15px 52px;
+            border: 1.5px solid rgba(255, 255, 255, 0.12);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            outline: none;
+            font-size: 15px;
+            color: #ffffff;
+            font-weight: 500;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-group input::placeholder {
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        .input-group input:focus {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: #38bdf8; /* High-contrast corporate Ice Blue focus state */
+            box-shadow: 0 0 0 4px rgba(56, 189, 248, 0.15);
+        }
+
+        .input-group input:focus + i {
+            color: #38bdf8;
+        }
+
+        /* Error/Alert Customization */
+        .message {
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 14px 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            animation: shake 0.4s ease-in-out;
+        }
+
+        .message i {
+            font-size: 16px;
+        }
+
+        /* Clean High-Contrast White Action Button */
+        .btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            background: #ffffff;
+            color: #001746;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            margin-top: 8px;
+        }
+
+        .btn:hover {
+            background: #f1f5f9;
+            box-shadow: 0 6px 20px rgba(255, 255, 255, 0.12);
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Helper link elements (Forgot Password) */
+        .form-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: -10px;
+            margin-bottom: 24px;
+        }
+
+        .forgot-link {
+            color: #94a3b8;
+            font-size: 14px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .forgot-link:hover {
+            color: #38bdf8;
+        }
+
+        /* Form Footer links with clean sky-blue readability updates */
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #94a3b8;
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .footer a {
+            text-decoration: none;
+            color: #38bdf8;
+            font-weight: 600;
+            padding-bottom: 2px;
+            border-bottom: 1.5px solid transparent;
+            transition: all 0.2s ease;
+        }
+
+        .footer a:hover {
+            border-color: #38bdf8;
+            color: #7dd3fc;
+        }
+
+        /* ==========================================
+           Animations & Micro-interactions
+        ========================================== */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-4px); }
+            75% { transform: translateX(4px); }
+        }
+
+        /* ==========================================
+           Responsive Design (Mobile-First Polish)
+        ========================================== */
+        @media (max-width: 1024px) {
+            .brand-panel {
+                display: none;
+            }
+            .form-panel {
+                width: 100%;
+                min-width: 100%;
+                background: #001746;
+            }
+            .container {
+                background: rgba(255, 255, 255, 0.02);
+                padding: 40px 35px;
+                border-radius: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                backdrop-filter: blur(10px);
+            }
+        }
+
+        .toggle-password {
+
+            position: absolute;
+
+            top: 50%;
+
+            right: 18px;
+
+            transform: translateY(-50%);
+
+            color: #94a3b8;
+
+            cursor: pointer;
+
+            font-size: 15px;
+
+            transition: 0.2s;
+        }
+
+        .toggle-password:hover {
+
+            color: #38bdf8;
+        }
+
+    </style>
+</head>
+
+<script>
+
+function togglePassword(inputId, element) {
+
+    const input = document.getElementById(inputId);
+
+    const icon = element.querySelector("i");
+
+    if (input.type === "password") {
+
+        input.type = "text";
+
+        icon.classList.remove("fa-eye");
+
+        icon.classList.add("fa-eye-slash");
+
+    } else {
+
+        input.type = "password";
+
+        icon.classList.remove("fa-eye-slash");
+
+        icon.classList.add("fa-eye");
+    }
+}
+
+</script>
+
+<body>
+
+    <div class="page-wrapper">
+        
+        <div class="brand-panel">
+            <img class="logo" src="{{ url_for('static', filename='uthm.png') }}" alt="UTHM Logo">
+            <h2>Universiti Tun Hussein Onn Malaysia</h2>
+            <p>With Wisdom, We Explore. Access the secure institutional records ecosystem.</p>
+        </div>
+
+        <div class="form-panel">
+            <div class="container">
+
+                <div class="title">
+                    <h1>Welcome Back</h1>
+                    <p>Document Verification System</p>
+                </div>
+
+                {% if message %}
+                <div class="message">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                    <span>{{ message }}</span>
+                </div>
+                {% endif %}
+
+                <form method="POST" action="/login">
+
+                    <div class="input-group">
+                        <input
+                            type="email"
+                            name="email"
+                            placeholder="Email Address"
+                            autocomplete="email"
+                            required
+                        >
+                        <i class="fa-regular fa-envelope"></i>
+                    </div>
+
+                    <div class="input-group">
+
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="Password"
+                            required
+                        >
+
+                        <i class="fa-solid fa-lock"></i>
+
+                        <span
+                            class="toggle-password"
+                            onclick="togglePassword('password', this)"
+                        >
+                            <i class="fa-solid fa-eye"></i>
+                        </span>
+
+                    </div>
+
+                    <div class="form-actions">
+                        <a href="{{ url_for('forgot_password') }}" class="forgot-link">
+                            Forgot Password?
+                        </a>
+                    </div>
+
+                    <button type="submit" class="btn">
+                        Login
+                    </button>
+
+                </form>
+
+                <div class="footer">
+                    Don't have an account? 
+                    <a href="/register">Register here</a>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>

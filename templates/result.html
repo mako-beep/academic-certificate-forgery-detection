@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Verification Result</title>
+</head>
+<body>
+
+<h2>Verification Result</h2>
+
+<h3>{{ result }}</h3>
+
+<p>Confidence: {{ confidence }}%</p>
+
+<img
+    src="{{ url_for('static', filename='uploads/' + image) }}"
+    width="400"
+>
+
+<br><br>
+
+<a href="/">Check Another Document</a>
+
+</body>
+</html>

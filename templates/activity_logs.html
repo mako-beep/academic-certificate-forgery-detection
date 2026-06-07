@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Activity Logs | Admin System Console</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Premium Midnight/Dark Theme Architecture for UTHM PPA */
+            --uthm-navy: #0A1220;       /* Ultra-Deep Midnight Navy Blue base */
+            --uthm-blue: #3B82F6;       /* Radiant Electric Accent Blue */
+            --uthm-gold: #FFCC00;       /* Official UTHM Golden Yellow Crest Accent */
+
+            /* Structural Dark Surfaces */
+            --bg-base: #0F172A;         /* Rich Slate Core Dark Background Canvas */
+            --bg-card: #1E293B;         /* Elevated Soft Charcoal Raised Interface Cards */
+            --border-clean: #334155;     /* Structural Border/Gridlines Matrix */
+            --border-hover: #475569;     /* Interactive Outline Boundary Transition Accent */
+
+            /* High Contrast Typography Matrix */
+            --text-title: #F8FAFC;       /* Crisp Near-White Title Header Typography */
+            --text-body: #CBD5E1;        /* Soft Gray Body Text Readability Focus */
+            --text-muted: #64748B;       /* Low-Emphasis Descriptive Metadata Label */
+
+            /* Optimized Dark Mode Semantic Status Indicators */
+            --metric-pending: #F59E0B;   /* Vibrant Luminous Amber */
+            --metric-pending-bg: rgba(245, 158, 11, 0.12);
+            --metric-genuine: #10B981;   /* Emerald Trust Ecosystem Safe-State */
+            --metric-genuine-bg: rgba(16, 185, 129, 0.12);
+            --metric-forged: #EF4444;    /* Security Warning Threat Vector Red */
+            --metric-forged-bg: rgba(239, 68, 68, 0.12);
+            --radius-pill:100px;
+            --radius-panel:12px;
+            --radius-item:8px;
+
+            --easing:cubic-bezier(0.16,1,0.3,1);
+
+            /* Administrative Premium Elevations */
+            --shadow-premium: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        body{
+            background-color:var(--bg-base);
+            color:var(--text-body);
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            overflow-x:hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+
+        /* ==========================================
+           Main Command Workspace 
+        ========================================== */
+        .workspace-wrapper{
+            flex:1;
+            padding:32px 40px;
+            max-width:1400px;
+            width:100%;
+            margin:0 auto;
+            display:flex;
+            flex-direction:column;
+            gap:24px;
+            animation: consoleEnter 0.4s var(--easing);
+        }
+
+        /* ==========================================
+           Console Data Grid Table Component
+        ========================================== */
+        .log-table-container{
+            background:var(--bg-card);
+            border-radius:var(--radius-panel);
+            border:1px solid var(--border-clean);
+            box-shadow:var(--shadow-premium);
+            overflow:hidden;
+        }
+
+        .console-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .console-table th {
+            background: rgba(0, 0, 0, 0.15);
+            color:var(--text-muted);
+            font-weight: 600;
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-clean);
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.75px;
+        }
+
+        .console-table td {
+            padding: 18px 24px;
+            border-bottom: 1px solid var(--border-clean);
+            color:var(--text-body);
+            vertical-align: middle;
+        }
+
+        .console-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .console-table tr:hover td {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Identity Field Design */
+        .user-identity {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-weight: 600;
+            color:var(--text-title);
+        }
+
+        .user-identity i {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Monospaced Log Payload Output */
+        .activity-string {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color:var(--uthm-blue);
+            background: rgba(0, 0, 0, 0.2);
+            padding: 6px 12px;
+            border-radius: 6px;
+            border:1px solid var(--border-clean);
+            display: inline-block;
+            max-width: 650px;
+            word-break: break-all;
+        }
+
+        /* Streamlined Monospaced Timestamp */
+        .timestamp-string {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 13px;
+            color: var(--text-muted);
+            white-space: nowrap;
+        }
+
+        .premium-navigation {
+            background: var(--uthm-navy);
+            border-bottom: 4px solid var(--uthm-gold);
+            padding: 0 40px;
+            height: 78px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .uthm-logo-frame {
+            background: #ffffff;
+            padding: 5px 12px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+        }
+
+        .uthm-logo-frame img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links-cluster {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            gap: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            align-items: center;
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: rgba(248, 250, 252, 0.65);
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: var(--radius-pill);
+            transition: all 0.2s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item i {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .nav-link-item:hover {
+            color: var(--uthm-gold);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-link-item.active {
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .nav-action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* --- System Notification Center Module --- */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .action-circle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+        }
+
+        .action-circle-btn:hover, .notification-wrapper:hover .action-circle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--uthm-gold);
+            color: var(--uthm-gold);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: var(--radius-pill);
+            background: var(--metric-forged);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--uthm-navy);
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 340px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-panel);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        .notification-wrapper:hover .notification-dropdown {
+            display: flex;
+            animation: drawerSlide 0.2s var(--easing) forwards;
+        }
+
+        @keyframes drawerSlide {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-title);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .dropdown-header h4 { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+        .dropdown-body { max-height: 280px; overflow-y: auto; }
+
+        .notification-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: var(--bg-card);
+            transition: background-color 0.2s ease;
+        }
+        .notification-item:hover { background: rgba(255, 255, 255, 0.02); }
+        .notification-item p { font-size: 13px; line-height: 1.4; color: var(--text-body); }
+        .notification-item span { font-size: 11px; color: var(--text-muted); }
+        .empty { text-align: center; color: var(--text-muted); padding: 32px 12px; font-size: 13px; }
+
+        /* --- Admin Executive Label Capsule --- */
+        .admin-meta-capsule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 14px 5px 5px;
+            background: rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        .admin-meta-capsule span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .logout-btn-header {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn-header:hover {
+            background: rgba(220,38,38,0.12);
+            border-color: #DC2626;
+            color: #DC2626;
+        }
+
+        .dashboard-hero-region {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-welcome-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-title);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-welcome-text p { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+
+        .meta-glass-pill {
+            background: var(--bg-card);
+            padding: 10px 18px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .meta-glass-pill i { color: var(--uthm-blue); font-size: 13px; }
+        .meta-glass-pill div p {
+            font-size: 10px;
+        }
+
+        .meta-glass-pill div h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        .analytics-matrix{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+            gap:20px;
+        }
+
+        .metric-node{
+            background:var(--bg-card);
+            padding:20px 24px;
+            border-radius:var(--radius-panel);
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border:1px solid var(--border-clean);
+            box-shadow:var(--shadow-premium);
+            transition: box-shadow 0.2s var(--easing), transform 0.2s var(--easing), border-color 0.2s var(--easing);
+        }
+
+        .metric-node:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .metric-data h3{
+            font-size:12px;
+            color:var(--text-muted);
+            text-transform:uppercase;
+            font-weight:700;
+            margin-bottom:6px;
+            letter-spacing: 0.04em;
+        }
+
+        .metric-data p{
+            font-size:28px;
+            font-weight:700;
+            color:var(--text-title);
+        }
+
+        .metric-icon-box{
+            width:44px;
+            height:44px;
+            border-radius:8px;
+            background: rgba(59, 130, 246, 0.12);
+            color:var(--uthm-blue);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            box-shadow: inset 0 0 0 1px rgba(59, 130, 246, 0.2);
+        }
+
+        .avatar-admin-badge{
+            width:32px;
+            height:32px;
+            border-radius:50%;
+            background:var(--uthm-gold);
+            color:var(--uthm-navy);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-size:14px;
+            font-weight: 700;
+        }
+
+        .nav-link-item.active i{
+            color:var(--uthm-navy);
+            opacity:1;
+        }
+
+        .nav-link-item:hover i{
+            color:var(--uthm-gold);
+        }
+
+        .node-total{
+            border-top:3px solid var(--uthm-blue);
+        }
+
+        .node-total .metric-data p{
+            color:var(--uthm-blue);
+        }
+
+
+
+        /* ==========================================
+           Animations & Responsive Elements
+        ========================================== */
+        @keyframes consoleEnter {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-dot {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        @media (max-width:992px){
+
+            .premium-navigation{
+                padding:0 20px;
+            }
+
+            .workspace-wrapper{
+                padding:24px 20px;
+            }
+
+            .console-table th,
+            .console-table td{
+                padding:14px 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="premium-navigation">
+        <div class="nav-brand-group">
+            <div class="uthm-logo-frame">
+                <img src="{{ url_for('static', filename='uthm.png') }}" onerror="this.src='uthm.jpg'" alt="Universiti Tun Hussein Onn Malaysia Logo">
+            </div>
+        </div>
+
+        <div class="nav-links-cluster">
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin_dataset') }}" class="nav-link-item">
+                <i class="fa-solid fa-database"></i>
+                <span>Dataset</span>
+            </a>
+            <a href="{{ url_for('admin_reviews') }}" class="nav-link-item">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>Reviews</span>
+            </a>
+            <a href="{{ url_for('activity_logs') }}" class="nav-link-item active">
+                <i class="fa-solid fa-history"></i>
+                <span>Activity Logs</span>
+            </a>
+        </div>
+
+        <div class="nav-action-cluster">
+            <div class="notification-wrapper">
+                <button class="action-circle-btn" aria-label="Open Alerts Drawer">
+                    <i class="fa-solid fa-bell"></i>
+                    {% if unread_notifications > 0 %}
+                    <span class="notification-badge">{{ unread_notifications }}</span>
+                    {% endif %}
+                </button>
+                
+                <div class="notification-dropdown">
+                    <div class="dropdown-header">
+                        <h4>Notifications</h4>
+                    </div>
+                    <div class="dropdown-body">
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                            <div class="notification-item">
+                                <p>{{ notification[0] }}</p>
+                                <span>{{ notification[1] }}</span>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="empty">No notifications present</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-meta-capsule">
+                <div class="avatar-admin-badge">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+                    <span>{{ username }}</span>
+            </div>
+
+            <button class="logout-btn-header" onclick="location.href='/logout'">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+<main class="workspace-wrapper">
+
+    <section class="dashboard-hero-region">
+    <div class="hero-welcome-text">
+        <h1>System Activity Logs</h1>
+        <p>Monitor administrative actions, system events and audit history.</p>
+    </div>
+
+    <div class="meta-glass-pill">
+        <i class="fa-regular fa-calendar-check"></i>
+
+        <div>
+            <p>CURRENT SESSION</p>
+            <h4 id="current-date">System Active</h4>
+        </div>
+    </div>
+</section>
+
+<section class="analytics-matrix">
+
+    <div class="metric-node node-total">
+        <div class="metric-data">
+            <h3>Total Log Entries</h3>
+            <p>{{ logs|length }}</p>
+        </div>
+
+        <div class="metric-icon-box">
+            <i class="fa-solid fa-list-check"></i>
+        </div>
+    </div>
+
+</section>
+
+    <div class="log-table-container">
+        <table class="console-table">
+            <thead>
+                <tr>
+                    <th style="width: 25%;">User</th>
+                    <th style="width: 50%;">Activity</th>
+                    <th style="width: 25%;">Date & Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                <tr>
+                    <td>
+                        <div class="user-identity">
+                            <i class="fa-regular fa-user"></i>
+                            <span>{{ log[0] }}</span>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="activity-string">
+                            {{ log[1] }}
+                        </div>
+                    </td>
+                    <td>
+                        <div class="timestamp-string">
+                            <i class="fa-regular fa-clock" style="margin-right: 6px; font-size: 12px; color: #475569;"></i>{{ log[2] }}
+                        </div>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</main>
+
+<script>
+// Dynamic clock output generation loop matching corporate compliance standards
+const calendarOptions = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+};
+
+document.getElementById('current-date').textContent =
+    new Date().toLocaleDateString('en-US', calendarOptions);
+</script>
+
+</body>
+</html>

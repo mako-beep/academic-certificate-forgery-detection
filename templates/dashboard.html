@@ -1,0 +1,912 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Integrity Dashboard | UTHM</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Official UTHM Palette Inspired Constants */
+            --uthm-navy: #002147;       /* Primary Deep Corporate Blue */
+            --uthm-blue: #0056B3;       /* Secondary Electric Active Blue */
+            --uthm-blue-light: #E6F0FA; /* Background Tint for Interactive Rows */
+            --uthm-gold: #FF9900;       /* Accent Branding Crest Gold */
+            --uthm-gold-light: #FFF5E6; /* Warning Tints */
+            
+            /* Structural System Canvas */
+            --bg-base: #F0F4F8;
+            --bg-card: #FFFFFF;
+            --border-clean: rgba(0, 33, 71, 0.1);
+            --border-hover: rgba(0, 86, 179, 0.25);
+            
+            /* Controlled Contrast Typography */
+            --text-title: #001124;
+            --text-body: #2C3E50;
+            --text-muted: #5A738E;
+
+            /* Contextual Semantic Variables */
+            --accent-success: #198754;
+            --accent-success-bg: #E8F5E9;
+            --accent-danger: #DC3545;
+            --accent-danger-bg: #FDF2F2;
+
+            /* Radii & Shadows */
+            --radius-pill: 100px;
+            --radius-panel: 16px;
+            --radius-item: 10px;
+            --shadow-premium: 0 6px 18px rgba(0, 33, 71, 0.04), 0 1px 3px rgba(0, 33, 71, 0.02);
+            --shadow-hover: 0 12px 28px rgba(0, 33, 71, 0.08), 0 2px 6px rgba(0, 33, 71, 0.04);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            
+        }
+
+        /* --- Global Structural Navigation --- */
+        .premium-navigation {
+            background: var(--uthm-navy);
+            border-bottom: 3px solid var(--uthm-gold);
+            padding: 14px 48px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .uthm-logo-frame {
+            background: #ffffff;
+            padding: 6px 12px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05);
+        }
+
+        .uthm-logo-frame img {
+            height: 44px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links-cluster {
+            display: flex;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            gap: 2px;
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 8px 22px;
+            border-radius: var(--radius-pill);
+            transition: all 0.25s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item i {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.5);
+            transition: color 0.2s;
+        }
+
+        .nav-link-item:hover {
+            color: #ffffff;
+            background: rgba(255, 255, 255, 0.12);
+        }
+
+        .nav-link-item:hover i {
+            color: var(--uthm-gold);
+        }
+
+        .nav-link-item.active {
+            background: var(--bg-card);
+            color: var(--uthm-navy);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .nav-link-item.active i {
+            color: var(--uthm-blue);
+        }
+
+        .nav-action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            position: relative;
+        }
+
+        /* --- Functional Interactive Notification Component --- */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .action-circle-btn {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+            position: relative;
+        }
+
+        .action-circle-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            border-color: var(--uthm-gold);
+            color: var(--uthm-gold);
+        }
+
+        .action-circle-btn.menu-active {
+            background: #ffffff;
+            color: var(--uthm-navy);
+            border-color: #ffffff;
+        }
+
+        .ping-indicator {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--accent-danger);
+            border: 2px solid var(--uthm-navy);
+        }
+
+        .action-circle-btn.menu-active .ping-indicator {
+            border-color: #ffffff;
+        }
+
+        /* Dropdown Architecture Panel */
+        .notification-dropdown {
+            position: absolute;
+            top: 48px;
+            right: 0;
+            width: 320px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-panel);
+            box-shadow: var(--shadow-hover);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+            animation: menuAppend 0.2s var(--easing) forwards;
+            transform-origin: top right;
+        }
+
+        @keyframes menuAppend {
+            from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 14px 18px;
+            background: var(--uthm-navy);
+            color: #ffffff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .dropdown-header h4 { font-size: 13.5px; font-weight: 700; letter-spacing: 0.02em; }
+        .dropdown-header span { font-size: 11px; background: var(--uthm-gold); color: var(--uthm-navy); padding: 2px 8px; border-radius: var(--radius-pill); font-weight: 700; }
+
+        .dropdown-body {
+            max-height: 260px;
+            overflow-y: auto;
+        }
+
+        .dropdown-item {
+            padding: 12px 18px;
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            gap: 12px;
+            transition: background 0.15s ease;
+            text-decoration: none;
+            color: var(--text-body);
+        }
+
+        .dropdown-item:hover { background: var(--uthm-blue-light); }
+        .dropdown-item:last-child { border-bottom: none; }
+        .dropdown-item i { margin-top: 3px; font-size: 14px; }
+        .dropdown-item.info i { color: var(--uthm-blue); }
+        .dropdown-item.warn i { color: var(--uthm-gold); }
+        .dropdown-item p { font-size: 12.5px; line-height: 1.4; }
+        .dropdown-item span { display: block; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+
+        /* --- Identity Info & Session Actions --- */
+        .user-meta-capsule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 14px 5px 5px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .avatar-placeholder {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 11px;
+            font-weight: 800;
+        }
+
+        .user-meta-capsule span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .logout-btn-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            border: 1px solid rgba(220, 53, 69, 0.4);
+            color: #ff8591;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 700;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+        }
+
+        .logout-btn-header:hover {
+            background: var(--accent-danger-bg);
+            border-color: var(--accent-danger);
+            color: var(--accent-danger);
+        }
+
+        /* --- Canvas Interface Workspace --- */
+        .workspace-wrapper {
+            flex: 1;
+            padding: 40px 64px;
+            max-width: 1600px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .dashboard-hero-region {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--border-clean);
+            padding-bottom: 20px;
+        }
+
+        .hero-welcome-text h1 {
+            font-size: 30px;
+            font-weight: 800;
+            color: var(--uthm-navy);
+            letter-spacing: -0.02em;
+            margin-bottom: 4px;
+        }
+
+        .hero-welcome-text p {
+            font-size: 14.5px;
+            color: var(--text-body);
+        }
+
+        .meta-glass-pill {
+            background: var(--bg-card);
+            border-left: 4px solid var(--uthm-gold);
+            box-shadow: var(--shadow-premium);
+            padding: 10px 18px;
+            border-radius: 0 var(--radius-item) var(--radius-item) 0;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .meta-glass-pill i { color: var(--uthm-blue); font-size: 15px; }
+        .meta-glass-pill div p { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); letter-spacing: 0.05em; }
+        .meta-glass-pill div h4 { font-size: 13.5px; font-weight: 700; color: var(--uthm-navy); }
+
+        /* --- Responsive Core Layout Framework --- */
+        .asymmetric-layout-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.5fr;
+            gap: 32px;
+        }
+
+        .grid-column-left, .grid-column-right {
+            display: flex;
+            flex-direction: column;
+            gap: 32px;
+        }
+
+        .premium-panel {
+            background: var(--bg-card);
+            border-radius: var(--radius-panel);
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            padding: 24px;
+            transition: border-color 0.3s var(--easing), box-shadow 0.3s var(--easing);
+        }
+
+        .premium-panel:hover {
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .panel-header-inline {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--border-clean);
+            padding-bottom: 12px;
+        }
+
+        .panel-header-inline h2 {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--uthm-navy);
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+        }
+
+        /* --- Cohesive Color Charts & Legends --- */
+        .pie-chart-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            gap: 24px;
+            padding: 8px 0;
+        }
+
+        .pie-svg-container {
+            position: relative;
+            width: 130px;
+            height: 130px;
+        }
+
+        .pie-svg-container svg { transform: rotate(-90deg); border-radius: 50%; }
+        .chart-legend-list { display: flex; flex-direction: column; gap: 10px; flex: 1; }
+        .legend-item { display: flex; align-items: center; justify-content: space-between; font-size: 13px; font-weight: 600; color: var(--text-body); }
+        .legend-label-group { display: flex; align-items: center; gap: 10px; }
+        .legend-color-dot { width: 11px; height: 11px; border-radius: 50%; }
+        .legend-value { font-weight: 700; color: var(--uthm-navy); }
+
+        /* --- Structured Analytics Items --- */
+        .analytics-strip-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .metric-strip-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 18px;
+            border-radius: var(--radius-item);
+            background: var(--bg-base);
+            border-left: 4px solid transparent;
+            transition: all 0.2s var(--easing);
+        }
+
+        .metric-strip-item:hover {
+            background: var(--bg-card);
+            box-shadow: var(--shadow-premium);
+            transform: translateX(4px);
+        }
+
+        .metric-strip-item.total { border-left-color: var(--uthm-blue); background: var(--uthm-blue-light); }
+        .metric-strip-item.genuine { border-left-color: var(--accent-success); background: var(--accent-success-bg); }
+        .metric-strip-item.forged { border-left-color: var(--accent-danger); background: var(--accent-danger-bg); }
+
+        .metric-strip-left { display: flex; align-items: center; gap: 14px; }
+        
+        .strip-icon-box {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: #ffffff;
+        }
+
+        .metric-strip-item.total .strip-icon-box { color: var(--uthm-blue); }
+        .metric-strip-item.genuine .strip-icon-box { color: var(--accent-success); }
+        .metric-strip-item.forged .strip-icon-box { color: var(--accent-danger); }
+
+        .strip-meta-text p { font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .strip-meta-text h3 { font-size: 14px; font-weight: 700; color: var(--uthm-navy); }
+        .metric-strip-value { font-size: 22px; font-weight: 800; color: var(--uthm-navy); }
+
+        /* --- Interface Control Panel Buttons --- */
+        .tile-action-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+
+        .action-tile-btn {
+            background: #ffffff;
+            border: 1px solid var(--border-clean);
+            padding: 14px 16px;
+            border-radius: var(--radius-item);
+            text-decoration: none;
+            color: var(--text-body);
+            transition: all 0.2s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .action-tile-btn i {
+            font-size: 15px;
+            color: var(--uthm-blue);
+            background: var(--uthm-blue-light);
+            width: 32px;
+            height: 32px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background 0.2s, color 0.2s;
+        }
+
+        .action-tile-btn span { font-size: 13px; font-weight: 700; color: var(--uthm-navy); }
+
+        .action-tile-btn:hover {
+            border-color: var(--uthm-blue);
+            box-shadow: var(--shadow-premium);
+            background: var(--uthm-blue-light);
+        }
+
+        .action-tile-btn:hover i {
+            background: var(--uthm-blue);
+            color: #ffffff;
+        }
+
+        /* --- Formal Data Table Views --- */
+        .table-scroller {
+            overflow-x: auto;
+            margin: 0 -24px -24px -24px;
+        }
+
+        .premium-data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        .premium-data-table th {
+            background: #F8FAFC;
+            padding: 12px 24px;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            border-bottom: 2px solid var(--border-clean);
+        }
+
+        .premium-data-table td {
+            padding: 14px 24px;
+            font-size: 13.5px;
+            color: var(--text-body);
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .premium-data-table tr:hover td {
+            background: rgba(0, 86, 179, 0.02);
+        }
+
+        .document-primary-cell {
+            font-weight: 600;
+            color: var(--uthm-navy);
+        }
+
+        .saas-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: var(--radius-pill);
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .metric-strip-item.pending {
+            border-left-color: var(--uthm-gold);
+            background: var(--uthm-gold-light);
+        }
+
+        .metric-strip-item.pending .strip-icon-box {
+            color: var(--uthm-gold);
+        }
+
+        .saas-badge.genuine { background: var(--accent-success-bg); color: var(--accent-success); }
+        .saas-badge.forged { background: var(--accent-danger-bg); color: var(--accent-danger); }
+        .saas-badge.pending { background: var(--uthm-gold-light); color: var(--uthm-gold); }
+
+        .empty-state-card {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+        }
+
+        @media (max-width: 1200px) {
+            .asymmetric-layout-grid { grid-template-columns: 1fr; }
+            .premium-navigation { padding: 14px 24px; }
+            .workspace-wrapper { padding: 32px 24px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="premium-navigation">
+        <div class="nav-brand-group">
+            <div class="uthm-logo-frame">
+                <img src="{{ url_for('static', filename='uthm.png') }}" alt="Universiti Tun Hussein Onn Malaysia Logo">
+            </div>
+        </div>
+
+        <div class="nav-links-cluster">
+            <a href="/dashboard" class="nav-link-item active">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="/" class="nav-link-item">
+                <i class="fa-solid fa-cloud-arrow-up"></i>
+                <span>Upload</span>
+            </a>
+            <a href="/history" class="nav-link-item">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+                <span>History</span>
+            </a>
+            <a href="/profile" class="nav-link-item">
+                <i class="fa-solid fa-circle-user"></i>
+                <span>Profile</span>
+            </a>
+        </div>
+
+        <div class="nav-action-cluster">
+            <div class="notification-wrapper" id="notificationHub">
+                <button class="action-circle-btn" id="notificationToggle" aria-label="Open Alerts Drawer" aria-haspopup="true">
+                    <i class="fa-regular fa-bell"></i>
+                    {% if unread_notifications > 0 %}
+                    <span class="ping-indicator"></span>
+                    {% endif %}
+                </button>
+                
+                <div class="notification-dropdown" id="notificationDropdown">
+                    <div class="dropdown-header">
+                        <h4>System Alerts</h4>
+                        <span>{{ unread_notifications }} New</span>
+                    </div>
+                    <div class="dropdown-body">
+
+                        {% if notifications %}
+
+                            {% for notification in notifications %}
+
+                            <div class="dropdown-item info">
+
+                                <i class="fa-solid fa-bell"></i>
+
+                                <div>
+                                    <p>{{ notification[0] }}</p>
+                                    <span>{{ notification[1] }}</span>
+                                </div>
+
+                            </div>
+
+                            {% endfor %}
+
+                        {% else %}
+
+                            <div class="dropdown-item info">
+                                <div>
+                                    <p>No notifications available.</p>
+                                </div>
+                            </div>
+
+                        {% endif %}
+
+                    </div>
+                </div>
+            </div>
+            
+            <div class="user-meta-capsule">
+                <div class="avatar-placeholder">
+                    <i class="fa-solid fa-user"></i>
+                </div>
+                <span>{{ username }}</span>
+            </div>
+
+            <button class="logout-btn-header" onclick="location.href='/logout'">
+                <i class="fa-solid fa-right-from-bracket"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="workspace-wrapper">
+        
+        <section class="dashboard-hero-region">
+            <div class="hero-welcome-text">
+                <h1>Academic Integrity Workspace</h1>
+                <p>Official credential verification tracking interface and institutional audit records monitoring logs.</p>
+            </div>
+            <div class="interactive-live-meta">
+                <div class="meta-glass-pill">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <p>Current Session</p>
+                        <h4 id="current-date">System Active</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <div class="asymmetric-layout-grid">
+            
+            <div class="grid-column-left">
+                
+                <div class="premium-panel">
+                    <div class="panel-header-inline">
+                        <h2>Verification Ratios</h2>
+                        <i class="fa-solid fa-chart-pie" style="color: var(--uthm-blue);"></i>
+                    </div>
+                    <div class="pie-chart-wrapper">
+                        <div class="pie-svg-container">
+                            <svg width="100%" height="100%" viewBox="0 0 42 42">
+                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="#E2E8F0" stroke-width="4.5"></circle>
+                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--accent-success)" stroke-width="4.5" stroke-dasharray="{{ genuine_percent }} {{ 100 - genuine_percent }}" stroke-dashoffset="0"></circle>
+                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--accent-danger)" stroke-width="4.5" stroke-dasharray="{{ forged_percent }} {{ 100 - forged_percent }}" stroke-dashoffset="-{{ genuine_percent }}"></circle>
+                                <circle cx="21" cy="21" r="15.915" fill="transparent" stroke="var(--uthm-gold)" stroke-width="4.5" stroke-dasharray="{{ pending_percent }} {{ 100 - pending_percent }}" stroke-dashoffset="-{{ genuine_percent + forged_percent }}"></circle>
+                                <circle cx="21" cy="21" r="11" fill="#ffffff"></circle>
+                            </svg>
+                        </div>
+                        <div class="chart-legend-list">
+                            <div class="legend-item">
+                                <div class="legend-label-group">
+                                    <span class="legend-color-dot" style="background: var(--accent-success);"></span>
+                                    <span>Genuine</span>
+                                </div>
+                                <span class="legend-value">{{ genuine_percent }}%</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-label-group">
+                                    <span class="legend-color-dot" style="background: var(--accent-danger);"></span>
+                                    <span>Forged</span>
+                                </div>
+                                <span class="legend-value">{{ forged_percent }}%</span>
+                            </div>
+                            <div class="legend-item">
+                                <div class="legend-label-group">
+                                    <span class="legend-color-dot" style="background: var(--uthm-gold);"></span>
+                                    <span>Pending</span>
+                                </div>
+                                <span class="legend-value">{{ pending_percent }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="premium-panel">
+                    <div class="panel-header-inline">
+                        <h2>Audit Analytics Summary</h2>
+                    </div>
+                    <div class="analytics-strip-vertical">
+                        <div class="metric-strip-item total">
+                            <div class="metric-strip-left">
+                                <div class="strip-icon-box"><i class="fa-solid fa-folder-tree"></i></div>
+                                <div class="strip-meta-text">
+                                    <p>Cumulative Index</p>
+                                    <h3>Total Documents</h3>
+                                </div>
+                            </div>
+                            <div class="metric-strip-value">{{ total }}</div>
+                        </div>
+
+                        <div class="metric-strip-item genuine">
+                            <div class="metric-strip-left">
+                                <div class="strip-icon-box"><i class="fa-solid fa-signature"></i></div>
+                                <div class="strip-meta-text">
+                                    <p>Passed Validation</p>
+                                    <h3>Genuine</h3>
+                                </div>
+                            </div>
+                            <div class="metric-strip-value">{{ genuine }}</div>
+                        </div>
+
+                        <div class="metric-strip-item forged">
+                            <div class="metric-strip-left">
+                                <div class="strip-icon-box"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                                <div class="strip-meta-text">
+                                    <p>Integrity Errors</p>
+                                    <h3>Forged</h3>
+                                </div>
+                            </div>
+                            <div class="metric-strip-value">{{ forged }}</div>
+                        </div>
+
+                        <div class="metric-strip-item pending">
+                            <div class="metric-strip-left">
+                                <div class="strip-icon-box">
+                                    <i class="fa-solid fa-clock"></i>
+                                </div>
+
+                                <div class="strip-meta-text">
+                                    <p>Manual Verification</p>
+                                    <h3>Pending</h3>
+                                </div>
+                            </div>
+
+                            <div class="metric-strip-value">
+                                {{ pending }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="premium-panel">
+                    <div class="panel-header-inline">
+                        <h2>Engine Control Panel</h2>
+                    </div>
+                    <div class="tile-action-grid">
+                        <a href="/" class="action-tile-btn">
+                            <i class="fa-solid fa-cloud-arrow-up"></i>
+                            <span>Upload Document</span>
+                        </a>
+                        <a href="/history" class="action-tile-btn">
+                            <i class="fa-solid fa-clock-rotate-left"></i>
+                            <span>Review Logs</span>
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="grid-column-right">
+                <div class="premium-panel" style="height: 100%;">
+                    <div class="panel-header-inline">
+                        <h2>Real-time Analysis Feed</h2>
+                        <i class="fa-solid fa-list-check" style="color: var(--uthm-blue);"></i>
+                    </div>
+
+                    {% if recent_activity %}
+                        <div class="table-scroller">
+                            <table class="premium-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Document Name</th>
+                                        <th>Result</th>
+                                        <th>Confidence</th>
+                                        <th>Status</th>
+                                        <th>Timestamp</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in recent_activity %}
+                                    <tr>
+                                        <td class="document-primary-cell">{{ item[0] }}</td>
+                                        <td>
+                                            {% if item[1] == 'Genuine' %}
+                                                <span class="saas-badge genuine">
+                                                    <i class="fa-solid fa-circle-check"></i>
+                                                    Genuine
+                                                </span>
+
+                                            {% elif item[1] == 'Forged' %}
+                                                <span class="saas-badge forged">
+                                                    <i class="fa-solid fa-circle-exclamation"></i>
+                                                    Forged
+                                                </span>
+
+                                            {% elif item[1] == 'Pending' %}
+                                                <span class="saas-badge pending">
+                                                    <i class="fa-solid fa-clock"></i>
+                                                    Pending
+                                                </span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {{ item[2] }}%
+                                        </td>
+
+                                        <td style="color: var(--text-body); max-width: 280px; text-overflow: ellipsis; overflow: hidden; white-space: nowrap;">
+                                            {{ item[3] }}
+                                        </td>
+
+                                        <td style="color: var(--text-muted); font-size: 12.5px; font-weight: 500;">
+                                            {{ item[4] }}
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="empty-state-card">
+                            <i class="fa-solid fa-shapes" style="font-size: 28px; color: var(--border-clean); margin-bottom: 8px; display: block;"></i>
+                            <p>No document validation activities indexed inside this scope yet.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <script>
+        // Calendar Meta Processing
+        const calendarOptions = { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' };
+        document.getElementById('current-date').textContent = new Date().toLocaleDateString('en-US', calendarOptions);
+
+        // Fully Functional Notification Toggle Logic
+        const toggleButton = document.getElementById('notificationToggle');
+        const dropdownMenu = document.getElementById('notificationDropdown');
+
+        toggleButton.addEventListener('click', function(event) {
+            event.stopPropagation();
+            const isOpen = dropdownMenu.style.display === 'flex';
+            dropdownMenu.style.display = isOpen ? 'none' : 'flex';
+            this.classList.toggle('menu-active', !isOpen);
+        });
+
+        document.addEventListener('click', function(event) {
+            if (!document.getElementById('notificationHub').contains(event.target)) {
+                dropdownMenu.style.display = 'none';
+                toggleButton.classList.remove('menu-active');
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+Flask
+flask-mysqldb
+numpy
+opencv-python-headless
+scikit-learn
+joblib
+reportlab
+Werkzeug
+gunicorn

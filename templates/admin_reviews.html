@@ -1,0 +1,873 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Pending Reviews | Admin System Console</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root{
+            /* Premium Midnight/Dark Theme Architecture for UTHM PPA */
+            --uthm-navy: #0A1220;       /* Ultra-Deep Midnight Navy Blue base */
+            --uthm-blue: #3B82F6;       /* Radiant Electric Accent Blue */
+            --uthm-gold: #FFCC00;       /* Official UTHM Golden Yellow Crest Accent */
+
+            /* Structural Dark Surfaces */
+            --bg-base: #0F172A;         /* Rich Slate Core Dark Background Canvas */
+            --bg-card: #1E293B;         /* Elevated Soft Charcoal Raised Interface Cards */
+            --border-clean: #334155;     /* Structural Border/Gridlines Matrix */
+            --border-hover: #475569;     /* Interactive Outline Boundary Transition Accent */
+
+            /* High Contrast Typography Matrix */
+            --text-title: #F8FAFC;       /* Crisp Near-White Title Header Typography */
+            --text-body: #CBD5E1;        /* Soft Gray Body Text Readability Focus */
+            --text-muted: #64748B;       /* Low-Emphasis Descriptive Metadata Label */
+
+            /* Optimized Dark Mode Semantic Status Indicators */
+            --metric-pending: #F59E0B;   /* Vibrant Luminous Amber */
+            --metric-pending-bg: rgba(245, 158, 11, 0.12);
+            --metric-genuine: #10B981;   /* Emerald Trust Ecosystem Safe-State */
+            --metric-genuine-bg: rgba(16, 185, 129, 0.12);
+            --metric-forged: #EF4444;    /* Security Warning Threat Vector Red */
+            --metric-forged-bg: rgba(239, 68, 68, 0.12);
+            --radius-pill:100px;
+            --radius-panel:12px;
+            --radius-item:8px;
+
+            /* Administrative Premium Elevations */
+            --shadow-premium: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+
+            --easing:cubic-bezier(0.16,1,0.3,1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        .premium-navigation{
+            background:var(--uthm-navy);
+            border-bottom:4px solid var(--uthm-gold);
+            padding:0 40px;
+            height: 78px;
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .uthm-logo-frame{
+            background:#fff;
+            padding:5px 12px;
+            border-radius:var(--radius-item);
+            display: flex;
+            align-items: center;
+        }
+
+        .uthm-logo-frame img{
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links-cluster{
+            display:flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            gap: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            align-items:center;
+        }
+
+        .nav-link-item{
+            text-decoration:none;
+            color:rgba(248, 250, 252, 0.65);
+            padding:10px 16px;
+            border-radius:var(--radius-pill);
+            font-size:13.5px;
+            font-weight:600;
+            transition: all 0.2s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item i {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .nav-link-item.active{
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .nav-link-item.active i {
+            color: var(--uthm-navy);
+            opacity: 1;
+        }
+
+        .nav-link-item:hover{
+            color: var(--uthm-gold);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-action-cluster{
+            display:flex;
+            align-items:center;
+            gap:16px;
+        }
+        
+        .admin-meta-capsule{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            padding:5px 14px 5px 5px;
+            background:rgba(255,255,255,0.06);
+            border-radius:var(--radius-pill);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .avatar-admin-badge{
+            width:32px;
+            height:32px;
+            background:var(--uthm-gold);
+            color:var(--uthm-navy);
+            display:flex;
+            justify-content:center;
+            align-items:center;
+            font-size:13px;
+            font-weight:700;
+            border-radius: 50%;
+        }
+
+        .admin-meta-capsule span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .logout-btn-header{
+            background:transparent;
+            border:1px solid rgba(255,255,255,0.1);
+            color:rgba(255, 255, 255, 0.8);
+            padding:10px 18px;
+            border-radius:var(--radius-pill);
+            cursor:pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .logout-btn-header:hover{
+            background: rgba(220,38,38,0.12);
+            border-color: #DC2626;
+            color: #DC2626;
+        }
+
+        body{
+            background-color:var(--bg-base);
+            color:var(--text-body);
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ==========================================
+           Sidebar Control Unit Panel 
+        ========================================== */
+    
+        /* ==========================================
+           Main Command Workspace 
+        ========================================== */
+        .workspace-wrapper{
+            flex:1;
+            padding:32px 40px;
+            max-width:1400px;
+            width:100%;
+            margin:0 auto;
+            display:flex;
+            flex-direction:column;
+            gap:24px;
+            animation: consoleEnter 0.4s var(--easing);
+        }
+
+        .dashboard-hero-region{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+        }
+
+        .hero-welcome-text h1{
+            font-size:24px;
+            font-weight:700;
+            color:var(--text-title);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-welcome-text p{
+            font-size:14px;
+            color:var(--text-muted);
+            margin-top:2px;
+        }
+
+        .meta-glass-pill{
+            background:var(--bg-card);
+            padding:10px 18px;
+            border-radius:var(--radius-item);
+            display:flex;
+            align-items:center;
+            gap:10px;
+            border:1px solid var(--border-clean);
+            box-shadow:var(--shadow-premium);
+        }
+
+        .meta-glass-pill i{
+            color:var(--uthm-blue);
+            font-size: 13px;
+        }
+        
+        .meta-glass-pill div p {
+            font-size:10px;
+        }
+
+        .meta-glass-pill div h4 {
+            font-family:'Plus Jakarta Sans', sans-serif;
+            font-size:13.5px;
+            font-weight:700;
+        }
+
+        .analytics-matrix{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+            gap:20px;
+        }
+
+        .metric-node{
+            background:var(--bg-card);
+            padding:20px 24px;
+            border-radius:12px;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            border:1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            border-top: 3px solid var(--metric-pending);
+            transition: box-shadow 0.2s var(--easing), transform 0.2s var(--easing), border-color 0.2s var(--easing);
+        }
+
+        .metric-node:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .metric-data h3{
+            font-size:12px;
+            color:var(--text-muted);
+            text-transform:uppercase;
+            font-weight:700;
+            margin-bottom:6px;
+            letter-spacing: 0.04em;
+        }
+
+        .metric-data p{
+            font-size:28px;
+            font-weight:700;
+            color:var(--metric-pending);
+            line-height: 1.1;
+        }
+
+        .metric-icon-box{
+            width:44px;
+            height:44px;
+            border-radius:var(--radius-item);
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            background:var(--metric-pending-bg);
+            color:var(--metric-pending);
+            box-shadow: inset 0 0 0 1px rgba(245, 158, 11, 0.2);
+            font-size: 18px;
+        }
+
+        /* ==========================================
+           System Action Toasts & Flashes 
+        ========================================== */
+        .msg-toast {
+            padding: 16px 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            font-size: 13.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .msg-approved {
+            background: var(--metric-genuine-bg);
+            color: var(--metric-genuine);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .msg-rejected {
+            background: var(--metric-forged-bg);
+            color: var(--metric-forged);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* ==========================================
+           Review Split-Card Components
+        ========================================== */
+        .review-container {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .review-card{
+            background:var(--bg-card);
+            border:1px solid var(--border-clean);
+            border-radius:12px;
+            box-shadow:var(--shadow-premium);
+            display: flex;
+        }
+
+        .review-card:hover{
+            border-color:var(--border-hover);
+            box-shadow:var(--shadow-hover);
+        }
+
+        /* Asset/Document Capture Box */
+        .doc-preview {
+            flex: 0 0 320px;
+            background:rgba(0, 0, 0, 0.15);
+            padding: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-right:1px solid var(--border-clean);
+        }
+
+        .doc-preview img {
+            max-width: 100%;
+            max-height: 220px;
+            border-radius: 8px;
+            object-fit: contain;
+            border:1px solid var(--border-clean);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s ease;
+        }
+
+        .doc-preview img:hover {
+            transform: scale(1.03);
+        }
+
+        /* Analytics Profile Details */
+        .doc-details {
+            flex: 1;
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .doc-details h3 {
+            color:var(--text-title);
+            font-size: 13.5px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+            margin-bottom: 20px;
+            word-break: break-all;
+            font-family:'Plus Jakarta Sans', sans-serif;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+            font-size: 14px;
+            color: var(--text-body);
+        }
+
+        .info-row:last-of-type {
+            border-bottom: none;
+            margin-bottom: 10px;
+        }
+
+        .info-row i {
+            width: 20px;
+            font-size: 15px;
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .info-row strong {
+            color:var(--text-title);
+            font-weight: 600;
+            min-width: 120px;
+        }
+        
+        .info-row span {
+            color: var(--text-body);
+        }
+
+        /* Core System Processing Tags */
+        .status-badge-pending {
+            background:var(--metric-pending-bg);
+            color:var(--metric-pending);
+            padding: 6px 12px;
+            border-radius: 100px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+            letter-spacing: 0.5px;
+        }
+
+        /* Card Inline Actions Buttons Layout */
+        .action-group {
+            margin-top: auto;
+            display: flex;
+            gap: 14px;
+            padding-top: 20px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            border: 1px solid transparent;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-approve{
+            background:var(--metric-genuine-bg);
+            color:var(--metric-genuine);
+            border:1px solid rgba(16, 185, 129, 0.3);
+        }
+        .btn-approve:hover{
+            background:var(--metric-genuine);
+            color:white;
+            transform: translateY(-1px);
+        }
+
+        .btn-reject{
+            background:var(--metric-forged-bg);
+            color:var(--metric-forged);
+            border:1px solid rgba(239, 68, 68, 0.3);
+        }
+        .btn-reject:hover{
+            background:var(--metric-forged);
+            color:white;
+            transform: translateY(-1px);
+        }
+        /* ==========================================
+           Console Empty States Component
+        ========================================== */
+        .empty-state {
+            text-align: center;
+            padding: 60px 40px;
+            background:var(--bg-card);
+            border-radius: 16px;
+            border:1px solid var(--border-clean);
+            box-shadow:var(--shadow-premium);
+            max-width: 600px;
+            margin: 40px auto 0 auto;
+        }
+
+        .empty-state i {
+            font-size: 42px;
+            color: var(--metric-genuine);
+            background: var(--metric-genuine-bg);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            border: 1px solid rgba(16, 185, 129, 0.15);
+        }
+
+        .empty-state h2 {
+            font-size: 20px;
+            font-weight: 700;
+            color:var(--text-title);
+            margin-bottom: 8px;
+        }
+
+        .empty-state p {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .empty-state-link {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--uthm-blue);
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: opacity 0.2s;
+        }
+
+        .empty-state-link:hover {
+            opacity: 0.8;
+        }
+
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .action-circle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+        }
+
+        .action-circle-btn:hover, .notification-wrapper:hover .action-circle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--uthm-gold);
+            color: var(--uthm-gold);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: var(--radius-pill);
+            background: var(--metric-forged);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--uthm-navy);
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 340px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-panel);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        .notification-wrapper:hover .notification-dropdown {
+            display: flex;
+            animation: drawerSlide 0.2s var(--easing) forwards;
+        }
+
+        @keyframes drawerSlide {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-title);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .dropdown-header h4 { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+        .dropdown-body { max-height: 280px; overflow-y: auto; }
+
+        .notification-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: var(--bg-card);
+            transition: background-color 0.2s ease;
+        }
+        .notification-item:hover { background: rgba(255, 255, 255, 0.02); }
+        .notification-item p { font-size: 13px; line-height: 1.4; color: var(--text-body); }
+        .notification-item span { font-size: 11px; color: var(--text-muted); }
+        .empty { text-align: center; color: var(--text-muted); padding: 32px 12px; font-size: 13px; }
+
+        /* Animations & Responsive Adjustments */
+        @keyframes consoleEnter {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-dot {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+
+        @media (max-width: 1024px) {
+            .review-card { flex-direction: column; }
+            .doc-preview { flex: none; width: 100%; border-right: none; border-bottom: 1px solid var(--border-clean); }
+        }
+        
+        @media (max-width: 768px) {
+            .premium-navigation { padding: 0 20px; }
+            .workspace-wrapper { padding: 24px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="premium-navigation">
+        <div class="nav-brand-group">
+            <div class="uthm-logo-frame">
+                <img src="{{ url_for('static', filename='uthm.png') }}" onerror="this.src='uthm.jpg'" alt="Universiti Tun Hussein Onn Malaysia Logo">
+            </div>
+        </div>
+
+        <div class="nav-links-cluster">
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin_dataset') }}" class="nav-link-item">
+                <i class="fa-solid fa-database"></i>
+                <span>Dataset</span>
+            </a>
+            <a href="{{ url_for('admin_reviews') }}" class="nav-link-item active">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>Reviews</span>
+            </a>
+            <a href="{{ url_for('activity_logs') }}" class="nav-link-item">
+                <i class="fa-solid fa-history"></i>
+                <span>Activity Logs</span>
+            </a>
+        </div>
+
+        <div class="nav-action-cluster">
+            <div class="notification-wrapper">
+                <button class="action-circle-btn" aria-label="Open Alerts Drawer">
+                    <i class="fa-solid fa-bell"></i>
+                    {% if unread_notifications and unread_notifications > 0 %}
+                    <span class="notification-badge">{{ unread_notifications }}</span>
+                    {% endif %}
+                </button>
+                
+                <div class="notification-dropdown">
+                    <div class="dropdown-header">
+                        <h4>Notifications</h4>
+                    </div>
+                    <div class="dropdown-body">
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                            <div class="notification-item">
+                                <p>{{ notification[0] }}</p>
+                                <span>{{ notification[1] }}</span>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="empty">No notifications present</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+                <div class="admin-meta-capsule">
+                    <div class="avatar-admin-badge">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+
+                    <span>{{ username }}</span>
+                </div>
+
+            <button class="logout-btn-header" onclick="location.href='/logout'">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+<main class="workspace-wrapper">
+
+    <section class="dashboard-hero-region">
+        <div class="hero-welcome-text">
+            <h1>Pending Manual Reviews</h1>
+            <p>Review and validate documents flagged for manual verification.</p>
+        </div>
+
+        <div class="meta-glass-pill">
+            <i class="fa-regular fa-calendar-check"></i>
+            <div>
+                <p>CURRENT SESSION</p>
+                <h4 id="current-date">System Active</h4>
+            </div>
+        </div>
+    </section>
+
+    <section class="analytics-matrix">
+
+        <div class="metric-node">
+            <div class="metric-data">
+                <h3>Pending Reviews</h3>
+                <p>{{ documents|length }}</p>
+            </div>
+            <div class="metric-icon-box">
+                <i class="fa-solid fa-clipboard-check"></i>
+            </div>
+        </div>
+
+    </section>
+
+    {% if request.args.get('msg') == 'approved' %}
+    <div class="msg-toast msg-approved">
+        <i class="fa-solid fa-circle-check"></i> Document successfully verified as Genuine.
+    </div>
+    {% elif request.args.get('msg') == 'rejected' %}
+    <div class="msg-toast msg-rejected">
+        <i class="fa-solid fa-circle-xmark"></i> Document successfully marked as Forged.
+    </div>
+    {% endif %}
+
+    <div class="review-container">
+        {% if documents %}
+            {% for row in documents %}
+            <div class="review-card">
+                
+                <div class="doc-preview">
+                    <a href="{{ url_for('static', filename='uploads/' + row[2]) }}" target="_blank">
+                        <img src="{{ url_for('static', filename='uploads/' + row[2]) }}" alt="Flagged Target Asset Preview">
+                    </a>
+                </div>
+
+                <div class="doc-details">
+                    <h3>{{ row[2] }}</h3>
+
+                    <div class="info-row">
+                        <i class="fa-solid fa-circle-user"></i>
+                        <strong>Submitted By:</strong>
+                        <span>{{ row[1] }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <i class="fa-solid fa-calendar-days"></i>
+                        <strong>Timestamp:</strong>
+                        <span>{{ row[6] }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <i class="fa-solid fa-robot"></i>
+                        <strong>Preliminary Result:</strong>
+                        <span>{{ row[3] }}</span>
+                    </div>
+
+                    <div class="info-row">
+                        <i class="fa-solid fa-chart-bar"></i>
+                        <strong>Confidence:</strong>
+                        <span>{{ row[4] }}%</span>
+                    </div>
+
+                    <div class="info-row">
+                        <i class="fa-solid fa-fingerprint"></i>
+                        <strong>Current Status:</strong>
+                        <div>
+                            <span class="status-badge-pending">{{ row[5] }}</span>
+                        </div>
+                    </div>
+
+                    <div class="action-group">
+                        <a href="{{ url_for('approve_document', document_id=row[0], decision='Genuine') }}?msg=approved" 
+                           class="btn btn-approve" 
+                           onclick="return confirm('Mark this specific entry data track as GENUINE? Ensure visual cross-checking matches criteria.');">
+                            <i class="fa-solid fa-check-double"></i> Approve Genuine
+                        </a>
+
+                        <a href="{{ url_for('approve_document', document_id=row[0], decision='Forged') }}?msg=rejected" 
+                           class="btn btn-reject" 
+                           onclick="return confirm('Classify this targeted document data track explicitly as FORGED? System variables will store signature markers.');">
+                            <i class="fa-solid fa-ban"></i> Reject Forged
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+            {% endfor %}
+            
+        {% else %}
+        
+        <div class="empty-state">
+            <i class="fa-solid fa-face-smile-wink"></i>
+            <h2>All Queues Cleared</h2>
+            <p>There are no validation entries processing or awaiting manual verification review right now.</p>
+            <a href="{{ url_for('admin_dashboard') }}" class="empty-state-link">
+                Return to System Dashboard <i class="fa-solid fa-arrow-right-long"></i>
+            </a>
+        </div>
+        {% endif %}
+    </div>
+
+</main>
+
+<script>
+// Dynamic clock output generation loop matching corporate compliance standards
+const calendarOptions = {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+};
+
+document.getElementById('current-date').textContent =
+    new Date().toLocaleDateString('en-US', calendarOptions);
+</script>
+
+</body>
+</html>

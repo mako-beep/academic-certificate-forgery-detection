@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Security Gateway | Verification Console</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2 family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Admin Core Hex Blueprint */
+            --admin-dark-bg: #0b0f19;
+            --admin-panel-bg: #111827;
+            --admin-border: #1f2937;
+            --admin-border-light: #374151;
+            
+            /* Status Indicators & Contextual Tints */
+            --metric-forged: #ef4444;
+            --metric-genuine: #10b981;
+            
+            --text-muted: #9ca3af;
+            --text-main: #f3f4f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--admin-dark-bg);
+            color: var(--text-main);
+            padding: 20px;
+        }
+
+        /* Top Module Header Architecture */
+        .top-system-bar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 30px;
+            text-align: center;
+            animation: consoleEnter 0.4s ease-out;
+        }
+
+        .uthm-brand-wrapper {
+            background: #ffffff;
+            padding: 6px 14px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .uthm-brand-logo {
+            height: 42px;
+            width: auto;
+        }
+
+        /* Dedicated Gateway Box Card Component */
+        .gateway-card {
+            background: var(--admin-panel-bg);
+            padding: 40px;
+            border-radius: 16px;
+            width: 100%;
+            max-width: 420px;
+            border: 1px solid var(--admin-border);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            animation: consoleEnter 0.4s ease-out;
+        }
+
+        .gateway-card h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .gateway-card h2 i {
+            color: var(--text-muted);
+            font-size: 20px;
+        }
+
+        .instruction-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 24px;
+        }
+
+        /* Console Alert String Architecture */
+        .msg-toast-error {
+            background: rgba(239, 68, 68, 0.08);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 12px 16px;
+            border-radius: 10px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Input Controls Strategy */
+        .input-group {
+            position: relative;
+            margin-bottom: 24px;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #6b7280;
+            font-size: 16px;
+            transition: color 0.2s ease;
+        }
+
+        .console-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--admin-border);
+            border-radius: 10px;
+            padding: 14px 16px 14px 46px;
+            color: #ffffff;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            letter-spacing: 2px;
+            transition: all 0.2s ease;
+        }
+
+        .console-input::placeholder {
+            color: #4b5563;
+            letter-spacing: normal;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .console-input:focus {
+            outline: none;
+            border-color: var(--admin-border-light);
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        /* Action Authentication Controls */
+        .btn-submit {
+            width: 100%;
+            padding: 14px;
+            border-radius: 10px;
+            background: #ffffff;
+            color: var(--admin-dark-bg);
+            border: 1px solid transparent;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-submit:hover {
+            background: transparent;
+            color: var(--metric-genuine);
+            border-color: rgba(16, 185, 129, 0.4);
+        }
+
+        /* Bottom Status Badge Terminal Elements */
+        .terminal-badge {
+            margin-top: 24px;
+            background: rgba(0, 0, 0, 0.15);
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--text-muted);
+            border: 1px solid var(--admin-border);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .terminal-badge::before {
+            content: '';
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            background-color: var(--metric-genuine);
+            border-radius: 50%;
+            animation: pulse-dot 2s infinite;
+        }
+
+        /* Animations & FX */
+        @keyframes consoleEnter {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes pulse-dot {
+            0% { opacity: 0.4; }
+            50% { opacity: 1; }
+            100% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="top-system-bar">
+    <div class="uthm-brand-wrapper">
+        <img class="uthm-brand-logo" src="{{ url_for('static', filename='uthm.png') }}" onerror="this.src='uthm.jpg'" alt="UTHM Crest Logo">
+    </div>
+</div>
+
+<div class="gateway-card">
+    
+    <h2><i class="fa-solid fa-key"></i> Identity Gateway</h2>
+    <p class="instruction-text">Enter the programmatic One-Time Password (OTP) dispatched to your registered workspace profile email to sync sessions.</p>
+
+    {% if message %}
+    <div class="msg-toast-error">
+        <i class="fa-solid fa-triangle-exclamation"></i>
+        <span>{{ message }}</span>
+    </div>
+    {% endif %}
+
+    <form method="POST">
+        
+        <div class="input-group">
+            <i class="fa-solid fa-shield-halved"></i>
+            <input 
+                type="text" 
+                name="otp" 
+                class="console-input"
+                placeholder="Enter Secure OTP" 
+                autocomplete="one-time-code"
+                required
+            >
+        </div>
+
+        <button type="submit" class="btn-submit">
+            <i class="fa-solid fa-unlock-keyhole"></i> Authenticate Identity
+        </button>
+
+    </form>
+
+    <center>
+        <div class="terminal-badge">
+            <span id="live-timestamp">TLS SECURE</span>
+        </div>
+    </center>
+
+</div>
+
+<script>
+// Dynamic clock output generation loop matching corporate compliance standards
+const updateSystemClock = () => {
+    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false };
+    const dateOptions = { year: 'numeric', month: 'short', day: 'numeric' };
+    const now = new Date();
+    
+    document.getElementById('live-timestamp').textContent = 
+        `GATEWAY // ${now.toLocaleDateString('en-US', dateOptions)} | ${now.toLocaleTimeString('en-US', timeOptions)}`;
+};
+setInterval(updateSystemClock, 1000);
+updateSystemClock();
+</script>
+
+</body>
+</html>

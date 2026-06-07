@@ -1,0 +1,801 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Dataset | Admin System Console</title>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            /* Premium Midnight/Dark Theme Architecture for UTHM PPA */
+            --uthm-navy: #0A1220;       /* Ultra-Deep Midnight Navy Blue base */
+            --uthm-blue: #3B82F6;       /* Radiant Electric Accent Blue */
+            --uthm-gold: #FFCC00;       /* Official UTHM Golden Yellow Crest Accent */
+            
+            /* Structural Dark Surfaces */
+            --bg-base: #0F172A;         /* Rich Slate Core Dark Background Canvas */
+            --bg-card: #1E293B;         /* Elevated Soft Charcoal Raised Interface Cards */
+            --border-clean: #334155;     /* Structural Border/Gridlines Matrix */
+            --border-hover: #475569;     /* Interactive Outline Boundary Transition Accent */
+            
+            /* High Contrast Typography Matrix */
+            --text-title: #F8FAFC;       /* Crisp Near-White Title Header Typography */
+            --text-body: #CBD5E1;        /* Soft Gray Body Text Readability Focus */
+            --text-muted: #64748B;       /* Low-Emphasis Descriptive Metadata Label */
+
+            /* Optimized Dark Mode Semantic Status Indicators */
+            --metric-pending: #F59E0B;   /* Vibrant Luminous Amber */
+            --metric-pending-bg: rgba(245, 158, 11, 0.12);
+            --metric-genuine: #10B981;   /* Emerald Trust Ecosystem Safe-State */
+            --metric-genuine-bg: rgba(16, 185, 129, 0.12);
+            --metric-forged: #EF4444;    /* Security Warning Threat Vector Red */
+            --metric-forged-bg: rgba(239, 68, 68, 0.12);
+            --metric-dataset: #3B82F6;
+            --metric-dataset-bg: rgba(59, 130, 246, 0.12);
+
+            /* Administrative Premium Elevations */
+            --radius-pill: 100px;
+            --radius-panel: 18px;
+            --radius-item: 8px;
+            --shadow-premium: 0 8px 24px rgba(0,0,0,.18);
+            --shadow-hover: 0 12px 32px rgba(0,0,0,.24);
+            --easing: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            letter-spacing: -0.01em;
+        }
+
+        body {
+            background-color: var(--bg-base);
+            color: var(--text-body);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* --- Global Executive Navigation Layer --- */
+        .premium-navigation {
+            background: var(--uthm-navy);
+            border-bottom: 4px solid var(--uthm-gold);
+            padding: 0 40px;
+            height: 78px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+        }
+
+        .uthm-logo-frame {
+            background: #ffffff;
+            padding: 5px 12px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+        }
+
+        .uthm-logo-frame img {
+            height: 45px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .nav-links-cluster {
+            display: flex;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px;
+            border-radius: var(--radius-pill);
+            gap: 2px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .nav-link-item {
+            text-decoration: none;
+            color: rgba(248, 250, 252, 0.65);
+            font-size: 13.5px;
+            font-weight: 600;
+            padding: 10px 16px;
+            border-radius: var(--radius-pill);
+            transition: all 0.2s var(--easing);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-link-item i {
+            font-size: 14px;
+            opacity: 0.7;
+        }
+
+        .nav-link-item:hover {
+            color: var(--uthm-gold);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .nav-link-item.active {
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            box-shadow: var(--shadow-premium);
+        }
+        
+        .nav-link-item.active i {
+            color: var(--uthm-navy);
+            opacity: 1;
+        }
+
+        .nav-action-cluster {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* --- System Notification Center Module --- */
+        .notification-wrapper {
+            position: relative;
+        }
+
+        .action-circle-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(255, 255, 255, 0.03);
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+        }
+
+        .action-circle-btn:hover, .notification-wrapper:hover .action-circle-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--uthm-gold);
+            color: var(--uthm-gold);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -1px;
+            right: -1px;
+            min-width: 18px;
+            height: 18px;
+            padding: 0 5px;
+            border-radius: var(--radius-pill);
+            background: var(--metric-forged);
+            color: #ffffff;
+            font-size: 10px;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 2px solid var(--uthm-navy);
+        }
+
+        .notification-dropdown {
+            position: absolute;
+            top: 50px;
+            right: 0;
+            width: 340px;
+            background: var(--bg-card);
+            border: 1px solid var(--border-clean);
+            border-radius: var(--radius-panel);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+            display: none;
+            flex-direction: column;
+            overflow: hidden;
+            z-index: 1100;
+        }
+
+        .notification-wrapper:hover .notification-dropdown {
+            display: flex;
+            animation: drawerSlide 0.2s var(--easing) forwards;
+        }
+
+        @keyframes drawerSlide {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-header {
+            padding: 14px 18px;
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-title);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-clean);
+        }
+
+        .dropdown-header h4 { font-size: 12.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.03em; }
+        .dropdown-body { max-height: 280px; overflow-y: auto; }
+
+        .notification-item {
+            padding: 14px 18px;
+            border-bottom: 1px solid var(--border-clean);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            background: var(--bg-card);
+            transition: background-color 0.2s ease;
+        }
+        .notification-item:hover { background: rgba(255, 255, 255, 0.02); }
+        .notification-item p { font-size: 13px; line-height: 1.4; color: var(--text-body); }
+        .notification-item span { font-size: 11px; color: var(--text-muted); }
+        .empty { text-align: center; color: var(--text-muted); padding: 32px 12px; font-size: 13px; }
+
+        /* --- Admin Executive Label Capsule --- */
+        .admin-meta-capsule {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 5px 14px 5px 5px;
+            background: rgba(255,255,255,0.06);
+            border-radius: var(--radius-pill);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+
+        .avatar-admin-badge {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: var(--uthm-gold);
+            color: var(--uthm-navy);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        .admin-meta-capsule span {
+            font-size: 13px;
+            font-weight: 600;
+            color: #ffffff;
+        }
+
+        .logout-btn-header {
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            padding: 10px 18px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: var(--radius-pill);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .logout-btn-header:hover {
+            background: rgba(220, 38, 38, 0.12);
+            border-color: #DC2626;
+            color: #DC2626;
+        }
+
+        /* --- Executive Workspace Viewport Layout --- */
+        .workspace-wrapper {
+            flex: 1;
+            padding: 32px 40px;
+            max-width: 1400px;
+            width: 100%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            animation: consoleEnter 0.4s var(--easing);
+        }
+
+        .dashboard-hero-region {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hero-welcome-text h1 {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-title);
+            letter-spacing: -0.02em;
+        }
+
+        .hero-welcome-text p { font-size: 14px; color: var(--text-muted); margin-top: 2px; }
+
+        .meta-glass-pill {
+            background: var(--bg-card);
+            padding: 10px 18px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+        }
+
+        .meta-glass-pill i { color: var(--uthm-blue); font-size: 13px; }
+        .meta-glass-pill div p { font-size: 10px; text-transform: uppercase; font-weight: 700; color: var(--text-muted); }
+        .meta-glass-pill div h4 {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-size: 13.5px;
+            font-weight: 700;
+        }
+
+        /* --- System Message Banners --- */
+        .msg {
+            padding: 16px 20px;
+            border-radius: var(--radius-panel);
+            font-size: 13.5px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: var(--shadow-premium);
+        }
+
+        .msg.success {
+            background: var(--metric-genuine-bg);
+            color: var(--metric-genuine);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+
+        .msg.error {
+            background: var(--metric-forged-bg);
+            color: var(--metric-forged);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        /* --- Top-Tier Key Performance Indicators Matrix --- */
+        .analytics-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .metric-node {
+            background: var(--bg-card);
+            padding: 20px 24px;
+            border-radius: var(--radius-panel);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            transition: box-shadow 0.2s var(--easing), transform 0.2s var(--easing), border-color 0.2s var(--easing);
+        }
+
+        .metric-node:hover {
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-hover);
+            border-color: var(--border-hover);
+        }
+
+        .metric-data h3 {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .metric-data p {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-title);
+            line-height: 1.1;
+        }
+
+        .metric-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: var(--radius-item);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+        }
+
+        .node-genuine { border-top: 3px solid var(--metric-genuine); }
+        .node-genuine .metric-icon-box { 
+            background: var(--metric-genuine-bg); 
+            color: var(--metric-genuine);
+            box-shadow: inset 0 0 0 1px rgba(16, 185, 129, 0.2);
+        }
+        .node-genuine .metric-data p { color: var(--metric-genuine); }
+
+        .node-forged { border-top: 3px solid var(--metric-forged); }
+        .node-forged .metric-icon-box { 
+            background: var(--metric-forged-bg); 
+            color: var(--metric-forged);
+            box-shadow: inset 0 0 0 1px rgba(239, 68, 68, 0.2);
+        }
+        .node-forged .metric-data p { color: var(--metric-forged); }
+
+        /* --- Dataset Management Panel --- */
+        .dataset-box {
+            background: var(--bg-card);
+            border-radius: var(--radius-panel);
+            border: 1px solid var(--border-clean);
+            box-shadow: var(--shadow-premium);
+            padding: 32px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .form-group label {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-title);
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+
+        /* Premium File Upload Interface */
+        input[type="file"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: var(--radius-item);
+            border: 1px solid var(--border-clean);
+            font-size: 13px;
+            background: rgba(0, 0, 0, 0.15);
+            color: var(--text-body);
+            cursor: pointer;
+            transition: border-color 0.2s var(--easing);
+        }
+
+        input[type="file"]::file-selector-button {
+            background: rgba(255, 255, 255, 0.05);
+            color: #ffffff;
+            border: 1px solid var(--border-clean);
+            padding: 6px 14px;
+            border-radius: 6px;
+            margin-right: 14px;
+            font-weight: 600;
+            font-size: 12.5px;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+        }
+
+        input[type="file"]::file-selector-button:hover {
+            background: rgba(255, 255, 255, 0.1);
+            border-color: var(--uthm-blue);
+        }
+
+        input[type="file"]:focus {
+            outline: none;
+            border-color: var(--uthm-blue);
+        }
+
+        /* Informational Metadata Box */
+        .dataset-note {
+            padding: 14px 16px;
+            border-radius: var(--radius-item);
+            background: var(--metric-dataset-bg);
+            color: #93c5fd;
+            font-size: 13px;
+            line-height: 1.5;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+
+        .dataset-note code {
+            font-family: 'JetBrains Mono', monospace;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 2px 6px;
+            border-radius: 4px;
+            color: var(--uthm-blue);
+            border: 1px solid var(--border-clean);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Operational Form Button Containers */
+        .button-group {
+            display: flex;
+            gap: 16px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: 1px solid transparent;
+            border-radius: var(--radius-item);
+            font-size: 13.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s var(--easing);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-upload {
+            background: var(--uthm-blue);
+            color: #ffffff;
+        }
+
+        .btn-upload:hover {
+            background: #2563eb;
+            transform: translateY(-1px);
+        }
+
+        .btn-train {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-title);
+            border-color: var(--border-clean);
+        }
+
+        .btn-train:hover {
+            background: var(--uthm-blue);
+            color: #ffffff;
+            border-color: var(--uthm-blue);
+            transform: translateY(-1px);
+        }
+
+        .btn-production {
+            background: var(--metric-genuine-bg);
+            color: var(--metric-genuine);
+            border-color: rgba(16, 185, 129, 0.3);
+        }
+
+        .btn-production:hover {
+            background: var(--metric-genuine);
+            color: #ffffff;
+            border-color: var(--metric-genuine);
+            transform: translateY(-1px);
+        }
+
+        .btn-discard {
+            background: var(--metric-forged-bg);
+            color: var(--metric-forged);
+            border-color: rgba(239, 68, 68, 0.3);
+        }
+
+        .btn-discard:hover {
+            background: var(--metric-forged);
+            color: #ffffff;
+            border-color: var(--metric-forged);
+            transform: translateY(-1px);
+        }
+
+        @keyframes consoleEnter {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .premium-navigation { padding: 0 20px; }
+            .workspace-wrapper { padding: 24px 20px; }
+            .button-group { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="premium-navigation">
+        <div class="nav-brand-group">
+            <div class="uthm-logo-frame">
+                <img src="{{ url_for('static', filename='uthm.png') }}" onerror="this.src='uthm.jpg'" alt="Universiti Tun Hussein Onn Malaysia Logo">
+            </div>
+        </div>
+
+        <div class="nav-links-cluster">
+            <a href="{{ url_for('admin_dashboard') }}" class="nav-link-item">
+                <i class="fa-solid fa-chart-pie"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="{{ url_for('admin_dataset') }}" class="nav-link-item active">
+                <i class="fa-solid fa-database"></i>
+                <span>Dataset</span>
+            </a>
+            <a href="{{ url_for('admin_reviews') }}" class="nav-link-item">
+                <i class="fa-solid fa-clipboard-check"></i>
+                <span>Reviews</span>
+            </a>
+            <a href="{{ url_for('activity_logs') }}" class="nav-link-item">
+                <i class="fa-solid fa-history"></i>
+                <span>Activity Logs</span>
+            </a>
+        </div>
+
+        <div class="nav-action-cluster">
+            <div class="notification-wrapper">
+                <button class="action-circle-btn" aria-label="Open Alerts Drawer">
+                    <i class="fa-solid fa-bell"></i>
+                    {% if unread_notifications and unread_notifications > 0 %}
+                    <span class="notification-badge">{{ unread_notifications }}</span>
+                    {% endif %}
+                </button>
+                
+                <div class="notification-dropdown">
+                    <div class="dropdown-header">
+                        <h4>Notifications</h4>
+                    </div>
+                    <div class="dropdown-body">
+                        {% if notifications %}
+                            {% for notification in notifications %}
+                            <div class="notification-item">
+                                <p>{{ notification[0] }}</p>
+                                <span>{{ notification[1] }}</span>
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                            <p class="empty">No notifications present</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="admin-meta-capsule">
+                <div class="avatar-admin-badge">
+                    <i class="fa-solid fa-user-shield"></i>
+                </div>
+
+                <span>{{ username }}</span>
+            </div>
+
+            <button class="logout-btn-header" onclick="location.href='/logout'">
+                <i class="fa-solid fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <main class="workspace-wrapper">
+        
+        <section class="dashboard-hero-region">
+            <div class="hero-welcome-text">
+                <h1>Manage Training Dataset</h1>
+                <p>Upload a dataset ZIP file and retrain the model.</p>
+            </div>
+            <div class="interactive-live-meta">
+                <div class="meta-glass-pill">
+                    <i class="fa-regular fa-calendar-check"></i>
+                    <div>
+                        <p>Current Session</p>
+                        <h4 id="current-date">System Active</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        {% if request.args.get('msg') == 'uploaded' %}
+        <div class="msg success">
+            <i class="fa-solid fa-circle-check"></i> Dataset successfully uploaded.
+        </div>
+        {% elif request.args.get('msg') == 'model_updated' %}
+        <div class="msg success">
+            <i class="fa-solid fa-circle-check"></i> Model has been updated successfully.
+        </div>
+        {% elif request.args.get('msg') == 'discarded' %}
+        <div class="msg success">
+            <i class="fa-solid fa-trash-can"></i> Model changes have been discarded successfully.
+        </div>
+        {% endif %}
+
+        <section class="analytics-matrix">
+            <div class="metric-node node-genuine">
+                <div class="metric-data">
+                    <h3>Genuine Dataset</h3>
+                    <p>{{ genuine_count }}</p>
+                </div>
+                <div class="metric-icon-box">
+                    <i class="fa-solid fa-circle-check"></i>
+                </div>
+            </div>
+
+            <div class="metric-node node-forged">
+                <div class="metric-data">
+                    <h3>Forged Dataset</h3>
+                    <p>{{ forged_count }}</p>
+                </div>
+                <div class="metric-icon-box">
+                    <i class="fa-solid fa-circle-exclamation"></i>
+                </div>
+            </div>
+        </section>
+
+        <section class="dataset-box">
+            
+            {% if accuracy %}
+            <div class="msg {% if eligible %}success{% else %}error{% endif %}">
+                <i class="fa-solid fa-microchip"></i>
+                <div>
+                    Model Accuracy: <strong>{{ accuracy }}%</strong> — 
+                    {% if eligible %}
+                        The trained model meets the required accuracy threshold.
+                    {% else %}
+                       The trained model does not meet the minimum accuracy requiremnts.
+                    {% endif %}
+                </div>
+            </div>
+            {% endif %}
+
+            <form action="{{ url_for('upload_dataset') }}" method="POST" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Uploaded Dataset ZIP</label>
+                    <input type="file" name="dataset_zip" accept=".zip" required>
+                    
+                    <div class="dataset-note">
+                        <i class="fa-solid fa-circle-info"></i>
+                        The ZIP file must contain:
+
+                        <br><br>
+
+                        <code>genuine/</code><br>
+                        <code>forged/</code>
+
+                        <br><br>
+
+                        JPG image files only.
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="submit" class="btn btn-upload">
+                        <i class="fa-solid fa-cloud-arrow-up"></i> Upload Dataset ZIP
+                    </button>
+            </form>
+
+            <form action="{{ url_for('train_model') }}" method="POST" style="flex: 1;">
+                    <button type="submit" class="btn btn-train">
+                        <i class="fa-solid fa-bolt"></i> Train Model
+                    </button>
+                </div>
+            </form>
+
+            {% if eligible %}
+            <form action="{{ url_for('update_model') }}" method="POST" style="margin-top: 8px;">
+                <button type="submit" class="btn btn-production" style="width: 100%;">
+                    <i class="fa-solid fa-network-wired"></i> Update Model
+                </button>
+            </form>
+
+            <form action="{{ url_for('discard_model') }}" method="POST" style="margin-top: -4px;">
+                <button type="submit" class="btn btn-discard" style="width: 100%;">
+                    <i class="fa-solid fa-trash-arrow-up"></i> Discard Temporary Model
+                </button>
+            </form>
+            {% endif %}
+
+        </section>
+    </main>
+
+    <script>
+        // High-Precision Real-time Institutional Execution Clock Component Loop
+        const calendarOptions = {
+            weekday: 'short',
+            year: 'numeric',
+            month: 'short',
+            day: 'numeric'
+        };
+
+        document.getElementById('current-date').textContent =
+            new Date().toLocaleDateString('en-US', calendarOptions);
+    </script>
+</body>
+</html>
