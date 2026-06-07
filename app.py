@@ -88,6 +88,11 @@ app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB')
 app.config['MYSQL_PORT'] = int(os.getenv('MYSQL_PORT', 12099))
 
+print("MYSQL_HOST =", os.getenv("MYSQL_HOST"))
+print("MYSQL_USER =", os.getenv("MYSQL_USER"))
+print("MYSQL_DB =", os.getenv("MYSQL_DB"))
+print("MYSQL_PORT =", os.getenv("MYSQL_PORT"))
+
 mysql = MySQL(app)
 
 # =========================
